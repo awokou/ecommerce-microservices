@@ -13,10 +13,10 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
-@Entity
-@Table(name = "users")
 @Data
 @Builder
+@Entity
+@Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
 public class User implements UserDetails {

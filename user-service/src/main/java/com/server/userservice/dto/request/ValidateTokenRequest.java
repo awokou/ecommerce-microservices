@@ -1,4 +1,4 @@
-package com.server.userservice.dto;
+package com.server.userservice.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ValidateTokenResponse {
-    private boolean valid;
-    private String email;
-    private String role;
+public class ValidateTokenRequest {
+    private String token;
 }

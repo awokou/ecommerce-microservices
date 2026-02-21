@@ -1,9 +1,9 @@
 package com.server.userservice.service;
 
-import com.server.userservice.dto.AuthResponse;
-import com.server.userservice.dto.LoginRequest;
-import com.server.userservice.dto.RegisterRequest;
-import com.server.userservice.dto.ValidateTokenResponse;
+import com.server.userservice.dto.response.AuthResponse;
+import com.server.userservice.dto.request.LoginRequest;
+import com.server.userservice.dto.request.RegisterRequest;
+import com.server.userservice.dto.response.ValidateTokenResponse;
 import com.server.userservice.entity.Role;
 import com.server.userservice.entity.User;
 import com.server.userservice.repository.UserRepository;

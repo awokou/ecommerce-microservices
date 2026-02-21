@@ -1,6 +1,10 @@
 package com.server.userservice.controller;
 
-import com.server.userservice.dto.*;
+import com.server.userservice.dto.request.LoginRequest;
+import com.server.userservice.dto.request.RegisterRequest;
+import com.server.userservice.dto.request.ValidateTokenRequest;
+import com.server.userservice.dto.response.AuthResponse;
+import com.server.userservice.dto.response.ValidateTokenResponse;
 import com.server.userservice.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

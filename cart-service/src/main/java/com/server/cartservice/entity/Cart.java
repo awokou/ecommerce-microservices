@@ -1,5 +1,6 @@
 package com.server.cartservice.entity;
 
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
@@ -10,16 +11,23 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
+@Entity
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Table(name = "carts")
 public class Cart implements Serializable {
 
-
+    @Id
     private String cartId;
+
     private String userId;
 
-    @Builder.Default
+    @ElementCollection
+    @CollectionTable(
+            name = "cart_items",
+            joinColumns = @JoinColumn(name = "cart_id")
+    )
     private List<CartItem> items = new ArrayList<>();
 
     private BigDecimal totalPrice;
@@ -32,7 +40,7 @@ public class Cart implements Serializable {
 
     public void addItem(CartItem newItem) {
         CartItem existingItem = items.stream()
-                .filter(item -> item.getProductCode().equals(newItem.getProductCode()))
+                .filter(item -> item.getCode().equals(newItem.getCode()))
                 .findFirst()
                 .orElse(null);
 
@@ -47,14 +55,14 @@ public class Cart implements Serializable {
     }
 
     public void removeItem(String productId) {
-        this.items.removeIf(item -> item.getProductCode().equals(productId));
+        this.items.removeIf(item -> item.getCode().equals(productId));
         this.updatedAt = LocalDateTime.now();
         calculateTotals();
     }
 
     public void updateItemQuantity(String productId, int quantity) {
         CartItem updatedItem =  items.stream()
-                .filter(item -> item.getProductCode().equals(productId))
+                .filter(item -> item.getCode().equals(productId))
                 .findFirst()
                 .orElse(null);
         if (updatedItem != null) {
@@ -63,6 +71,7 @@ public class Cart implements Serializable {
             calculateTotals();
         }
     }
+
     public void clear() {
         this.items.clear();
         this.updatedAt = LocalDateTime.now();
@@ -87,6 +96,7 @@ public class Cart implements Serializable {
                 .mapToInt(CartItem::getQuantity)
                 .sum();
     }
+
     public static String generateCartId() {
         return "CART-" + UUID.randomUUID().toString();
     }

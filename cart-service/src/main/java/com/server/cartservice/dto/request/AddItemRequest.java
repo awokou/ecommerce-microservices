@@ -17,7 +17,7 @@ public class AddItemRequest {
     @Min(value = 1)
     private Integer quantity;
 
-    private String productName;
+    private String name;
     private BigDecimal unitPrice;
-    private String productImage;
+    private String imageUrl;
 }

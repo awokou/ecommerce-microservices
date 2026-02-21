@@ -1,16 +1,18 @@
 package com.server.productservice.entity;
 
+import com.server.productservice.audit.Auditable;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
 
-@Entity
-@Table(name = "products")
+
 @Data
 @Builder
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "products")
 @EqualsAndHashCode(callSuper = true)
 public class Product extends Auditable {
 

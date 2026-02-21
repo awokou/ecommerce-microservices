@@ -1,10 +1,11 @@
-package com.server.productservice.service;
+package com.server.productservice.service.impl;
 
-import com.server.productservice.dto.ProductRequest;
-import com.server.productservice.dto.ProductResponse;
+import com.server.productservice.dto.request.ProductRequest;
+import com.server.productservice.dto.response.ProductResponse;
 import com.server.productservice.entity.Product;
 import com.server.productservice.exception.ProductNotFoundException;
 import com.server.productservice.repository.ProductRepository;
+import com.server.productservice.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.server.productservice.entity;
+package com.server.productservice.audit;
 
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;

@@ -1,7 +1,7 @@
 package com.server.productservice.controller;
 
-import com.server.productservice.dto.ProductRequest;
-import com.server.productservice.dto.ProductResponse;
+import com.server.productservice.dto.request.ProductRequest;
+import com.server.productservice.dto.response.ProductResponse;
 import com.server.productservice.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;

@@ -1,4 +1,4 @@
-package com.server.productservice.dto;
+package com.server.productservice.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -30,10 +30,10 @@ public class CartMapper {
     }
     public CartItemResponse mapItemToResponse(CartItem item) {
         return CartItemResponse.builder()
-                .itemId(item.getItemId())
-                .productId(item.getProductCode())
-                .productName(item.getProductName())
-                .productImage(item.getProductImage())
+                .id(item.getId())
+                .code(item.getCode())
+                .name(item.getName())
+                .imageUrl(item.getImageUrl())
                 .quantity(item.getQuantity())
                 .unitPrice(item.getUnitPrice())
                 .lineTotal(item.getLineTotal())

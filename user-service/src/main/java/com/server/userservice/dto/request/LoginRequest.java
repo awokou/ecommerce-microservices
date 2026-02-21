@@ -1,4 +1,4 @@
-package com.server.userservice.dto;
+package com.server.userservice.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

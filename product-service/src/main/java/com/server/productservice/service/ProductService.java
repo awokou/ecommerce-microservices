@@ -1,7 +1,7 @@
 package com.server.productservice.service;
 
-import com.server.productservice.dto.ProductRequest;
-import com.server.productservice.dto.ProductResponse;
+import com.server.productservice.dto.request.ProductRequest;
+import com.server.productservice.dto.response.ProductResponse;
 
 import java.util.List;
 
