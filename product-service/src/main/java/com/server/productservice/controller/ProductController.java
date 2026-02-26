@@ -1,7 +1,7 @@
 package com.server.productservice.controller;
 
-import com.server.productservice.dto.request.ProductRequest;
-import com.server.productservice.dto.response.ProductResponse;
+import com.server.productservice.domain.dto.request.ProductRequest;
+import com.server.productservice.domain.dto.response.ProductResponse;
 import com.server.productservice.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -37,6 +37,22 @@ public class ProductController {
         return ResponseEntity.ok(product);
     }
 
+    @Operation(summary = "Get all products by name")
+    @GetMapping("/{name}")
+    public ResponseEntity<List<ProductResponse>> getAllProductsByName(@PathVariable String name) {
+        log.info("Rest request to get all products by name: {}", name);
+        List<ProductResponse> product = productService.getAllProductsByName(name);
+        return ResponseEntity.ok(product);
+    }
+
+    @Operation(summary = "Get all products with available true")
+    @GetMapping("/available")
+    public ResponseEntity<List<ProductResponse>> getAllAvailableTrue() {
+        log.info("Rest request to get all products with available true");
+        List<ProductResponse> product = productService.getAllAvailableTrue();
+        return ResponseEntity.ok(product);
+    }
+
     @Operation(summary = "Get all products")
     @GetMapping
     public ResponseEntity<List<ProductResponse>> getAllProducts() {
@@ -55,10 +71,7 @@ public class ProductController {
 
     @Operation(summary = "Check product availability")
     @GetMapping("/{code}/availability")
-    public ResponseEntity<Boolean> checkAvailability(
-            @PathVariable String code,
-            @RequestParam int quantity) {
-
+    public ResponseEntity<Boolean> checkAvailability(@PathVariable String code, @RequestParam int quantity) {
         log.info("Rest request to check availability: code={}, quantity={}", code, quantity);
         boolean available = productService.isProductAvailable(code, quantity);
         return ResponseEntity.ok(available);
@@ -66,10 +79,7 @@ public class ProductController {
 
     @Operation(summary = "Update product")
     @PutMapping("/{code}")
-    public ResponseEntity<ProductResponse> updateProduct(
-            @PathVariable String code,
-            @Valid @RequestBody ProductRequest request) {
-
+    public ResponseEntity<ProductResponse> updateProduct(@PathVariable String code, @Valid @RequestBody ProductRequest request) {
         log.info("Rest request to update product: {}", code);
         ProductResponse product = productService.updateProduct(code, request);
         return ResponseEntity.ok(product);

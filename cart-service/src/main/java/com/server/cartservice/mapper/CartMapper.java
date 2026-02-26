@@ -1,9 +1,9 @@
 package com.server.cartservice.mapper;
 
-import com.server.cartservice.dto.response.CartItemResponse;
-import com.server.cartservice.dto.response.CartResponse;
-import com.server.cartservice.entity.Cart;
-import com.server.cartservice.entity.CartItem;
+import com.server.cartservice.domain.dto.response.CartItemResponse;
+import com.server.cartservice.domain.dto.response.CartResponse;
+import com.server.cartservice.domain.entity.Cart;
+import com.server.cartservice.domain.entity.CartItem;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

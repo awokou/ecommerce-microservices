@@ -1,7 +1,7 @@
 package com.server.productservice.service;
 
-import com.server.productservice.dto.request.ProductRequest;
-import com.server.productservice.dto.response.ProductResponse;
+import com.server.productservice.domain.dto.request.ProductRequest;
+import com.server.productservice.domain.dto.response.ProductResponse;
 
 import java.util.List;
 
@@ -14,6 +14,10 @@ public interface ProductService {
     List<ProductResponse> getAllProducts();
 
     List<ProductResponse> getProductsByCategory(String category);
+
+    List<ProductResponse> getAllProductsByName(String name);
+
+    List<ProductResponse> getAllAvailableTrue();
 
     ProductResponse updateProduct(String code, ProductRequest request);
 

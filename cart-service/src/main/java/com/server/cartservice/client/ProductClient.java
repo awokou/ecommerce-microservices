@@ -1,6 +1,6 @@
 package com.server.cartservice.client;
 
-import com.server.cartservice.dto.external.ProductDto;
+import com.server.cartservice.domain.dto.external.ProductDto;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.cloud.openfeign.FeignClient;

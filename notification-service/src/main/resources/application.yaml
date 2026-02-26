@@ -1,0 +1,22 @@
+# Server
+server:
+  port: 9090
+
+spring:
+  application:
+    name: notification-service
+
+
+
+
+
+# Eureka
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}

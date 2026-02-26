@@ -1,6 +1,6 @@
 package com.server.cartservice.client;
 
-import com.server.cartservice.dto.external.ProductDto;
+import com.server.cartservice.domain.dto.external.ProductDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

@@ -1,8 +1,8 @@
 package com.server.cartservice.controller;
 
-import com.server.cartservice.dto.request.AddItemRequest;
-import com.server.cartservice.dto.request.UpdateQuantityRequest;
-import com.server.cartservice.dto.response.CartResponse;
+import com.server.cartservice.domain.dto.request.AddItemRequest;
+import com.server.cartservice.domain.dto.request.UpdateQuantityRequest;
+import com.server.cartservice.domain.dto.response.CartResponse;
 import com.server.cartservice.service.CartService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -19,7 +19,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CartNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleCartNotFound(CartNotFoundException ex) {
         log.error("Cart not found: {}", ex.getMessage());
-
         ErrorResponse error = ErrorResponse.builder().timestamp(LocalDateTime.now())
                 .status(HttpStatus.NOT_FOUND.value())
                 .error("Not Found")
@@ -32,7 +31,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InvalidCartOperationException.class)
     public ResponseEntity<ErrorResponse> handleInvalidCartOperation(InvalidCartOperationException ex) {
         log.error("Invalid cart operation: {}", ex.getMessage());
-
         ErrorResponse error = ErrorResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.BAD_REQUEST.value())
@@ -46,7 +44,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidationErrors(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
-
         ex.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
@@ -54,7 +51,6 @@ public class GlobalExceptionHandler {
         });
 
         log.error("Validation errors: {}", errors);
-
         ErrorResponse error = ErrorResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.BAD_REQUEST.value())
@@ -69,7 +65,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
         log.error("Unexpected error occurred: ", ex);
-
         ErrorResponse error = ErrorResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.value())

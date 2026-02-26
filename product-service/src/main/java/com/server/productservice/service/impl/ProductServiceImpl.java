@@ -1,8 +1,8 @@
 package com.server.productservice.service.impl;
 
-import com.server.productservice.dto.request.ProductRequest;
-import com.server.productservice.dto.response.ProductResponse;
-import com.server.productservice.entity.Product;
+import com.server.productservice.domain.dto.request.ProductRequest;
+import com.server.productservice.domain.dto.response.ProductResponse;
+import com.server.productservice.domain.entity.Product;
 import com.server.productservice.exception.ProductNotFoundException;
 import com.server.productservice.repository.ProductRepository;
 import com.server.productservice.service.ProductService;
@@ -12,11 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
@@ -25,7 +24,9 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public ProductResponse createProduct(ProductRequest request) {
         log.info("Creating product: {}", request.getCode());
-
+        if (productRepository.existsByCode(request.getCode())) {
+            throw new ProductNotFoundException("Product code already exists: " + request.getCode());
+        }
         Product product = Product.builder()
                 .code(request.getCode())
                 .name(request.getName())
@@ -37,17 +38,16 @@ public class ProductServiceImpl implements ProductService {
                 .available(request.getStockQuantity() > 0)
                 .build();
 
-        Product saved = productRepository.save(product);
-        log.info("Product created successfully: {}", saved.getCode());
+        Product savedProduct = productRepository.save(product);
+        log.info("Product created successfully: {}", savedProduct.getCode());
 
-        return mapToResponse(saved);
+        return mapToResponse(savedProduct);
     }
 
     @Override
     @Transactional(readOnly = true)
     public ProductResponse getProduct(String code) {
         log.info("Getting product: {}", code);
-
         Product product = productRepository.findByCode(code)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found: " + code));
 
@@ -58,23 +58,43 @@ public class ProductServiceImpl implements ProductService {
     @Transactional(readOnly = true)
     public List<ProductResponse> getAllProducts() {
         log.info("Getting all products");
-
-        return productRepository.findAll().stream()
+        return productRepository.findAll()
+                .stream()
                 .map(this::mapToResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<ProductResponse> getProductsByCategory(String category) {
         log.info("Getting products by category: {}", category);
-
-        return productRepository.findByCategory(category).stream()
+        return productRepository.findByCategory(category)
+                .stream()
                 .map(this::mapToResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public List<ProductResponse> getAllProductsByName(String name) {
+        log.info("Getting products by name: {}", name);
+        return productRepository.findAllByName(name)
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ProductResponse> getAllAvailableTrue() {
+        return productRepository.findByAvailableTrue()
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+    }
+
+    @Override
+    @Transactional
     public ProductResponse updateProduct(String code, ProductRequest request) {
         log.info("Updating product: {}", code);
 
@@ -96,9 +116,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public void deleteProduct(String code) {
         log.info("Deleting product: {}", code);
-
         Product product = productRepository.findByCode(code)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found: " + code));
 
@@ -107,10 +127,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public boolean isProductAvailable(String productId, int quantity) {
         log.info("Checking availability for product {} with quantity {}", productId, quantity);
-
         Product product = productRepository.findByCode(productId)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found: " + productId));
 

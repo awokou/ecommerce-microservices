@@ -18,7 +18,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ProductNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleProductNotFound(ProductNotFoundException ex) {
         log.error("Product not found: {}", ex.getMessage());
-
         Map<String, Object> error = new HashMap<>();
         error.put("timestamp", LocalDateTime.now());
         error.put("status", HttpStatus.NOT_FOUND.value());

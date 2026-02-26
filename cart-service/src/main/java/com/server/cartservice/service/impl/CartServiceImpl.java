@@ -1,12 +1,12 @@
 package com.server.cartservice.service.impl;
 
 import com.server.cartservice.client.ProductClient;
-import com.server.cartservice.dto.external.ProductDto;
-import com.server.cartservice.dto.request.AddItemRequest;
-import com.server.cartservice.dto.request.UpdateQuantityRequest;
-import com.server.cartservice.dto.response.CartResponse;
-import com.server.cartservice.entity.Cart;
-import com.server.cartservice.entity.CartItem;
+import com.server.cartservice.domain.dto.external.ProductDto;
+import com.server.cartservice.domain.dto.request.AddItemRequest;
+import com.server.cartservice.domain.dto.request.UpdateQuantityRequest;
+import com.server.cartservice.domain.dto.response.CartResponse;
+import com.server.cartservice.domain.entity.Cart;
+import com.server.cartservice.domain.entity.CartItem;
 import com.server.cartservice.exception.CartNotFoundException;
 import com.server.cartservice.exception.InvalidCartOperationException;
 import com.server.cartservice.mapper.CartMapper;

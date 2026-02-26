@@ -1,6 +1,6 @@
 package com.server.userservice.repository;
 
-import com.server.userservice.entity.User;
+import com.server.userservice.domain.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
