@@ -23,12 +23,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public ProductResponse createProduct(ProductRequest request) {
-        log.info("Creating product: {}", request.getCode());
-        if (productRepository.existsByCode(request.getCode())) {
-            throw new ProductNotFoundException("Product code already exists: " + request.getCode());
+        log.info("Creating product: {}", request.getProductCode());
+        if (productRepository.existsByCode(request.getProductCode())) {
+            throw new ProductNotFoundException("Product code already exists: " + request.getProductCode());
         }
         Product product = Product.builder()
-                .code(request.getCode())
+                .code(request.getProductCode())
                 .name(request.getName())
                 .description(request.getDescription())
                 .price(request.getPrice())
@@ -46,10 +46,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional(readOnly = true)
-    public ProductResponse getProduct(String code) {
-        log.info("Getting product: {}", code);
-        Product product = productRepository.findByCode(code)
-                .orElseThrow(() -> new ProductNotFoundException("Product not found: " + code));
+    public ProductResponse getProduct(String productCode) {
+        log.info("Getting product: {}", productCode);
+        Product product = productRepository.findByCode(productCode)
+                .orElseThrow(() -> new ProductNotFoundException("Product not found: " + productCode));
 
         return mapToResponse(product);
     }
@@ -95,11 +95,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public ProductResponse updateProduct(String code, ProductRequest request) {
-        log.info("Updating product: {}", code);
+    public ProductResponse updateProduct(String productCode, ProductRequest request) {
+        log.info("Updating product: {}", productCode);
 
-        Product product = productRepository.findByCode(code)
-                .orElseThrow(() -> new ProductNotFoundException("Product not found: " + code));
+        Product product = productRepository.findByCode(productCode)
+                .orElseThrow(() -> new ProductNotFoundException("Product not found: " + productCode));
 
         product.setName(request.getName());
         product.setDescription(request.getDescription());
@@ -110,20 +110,20 @@ public class ProductServiceImpl implements ProductService {
         product.setAvailable(request.getStockQuantity() > 0);
 
         Product updated = productRepository.save(product);
-        log.info("Product updated successfully: {}", code);
+        log.info("Product updated successfully: {}", productCode);
 
         return mapToResponse(updated);
     }
 
     @Override
     @Transactional
-    public void deleteProduct(String code) {
-        log.info("Deleting product: {}", code);
-        Product product = productRepository.findByCode(code)
-                .orElseThrow(() -> new ProductNotFoundException("Product not found: " + code));
+    public void deleteProduct(String productCode) {
+        log.info("Deleting product: {}", productCode);
+        Product product = productRepository.findByCode(productCode)
+                .orElseThrow(() -> new ProductNotFoundException("Product not found: " + productCode));
 
         productRepository.delete(product);
-        log.info("Product deleted successfully: {}", code);
+        log.info("Product deleted successfully: {}", productCode);
     }
 
     @Override
@@ -138,7 +138,8 @@ public class ProductServiceImpl implements ProductService {
 
     private ProductResponse mapToResponse(Product product) {
         return ProductResponse.builder()
-                .code(product.getCode())
+                .id(product.getId())
+                .productCode(product.getCode())
                 .name(product.getName())
                 .description(product.getDescription())
                 .price(product.getPrice())

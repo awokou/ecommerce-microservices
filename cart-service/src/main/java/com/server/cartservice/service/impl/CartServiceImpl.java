@@ -17,17 +17,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class CartServiceImpl implements CartService {
-
-    private final CartRepository cartRepository;
-    private final CartMapper cartMapper;
-    private final ProductClient productClient;
 
     @Value("${cart.max-items}")
     private int maxItems;
@@ -35,11 +32,16 @@ public class CartServiceImpl implements CartService {
     @Value("${cart.ttl-days}")
     private long timeBeforeCartToExpire;
 
+    private final CartRepository cartRepository;
+    private final CartMapper cartMapper;
+    private final ProductClient productClient;
+
     @Override
+    @Transactional
     public CartResponse createCart(String userId) {
         log.info("Creating new Cart for user : {}", userId);
         Cart cart = Cart.builder()
-                .cartId(Cart.generateCartId())
+                .id(Cart.generateCartId())
                 .userId(userId)
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
@@ -53,38 +55,38 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public CartResponse getCart(String cartId) {
         log.info("Retrieving cart: {}", cartId);
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new CartNotFoundException("Cart not found: " + cartId));
+
         return cartMapper.mapToResponse(cart);
     }
 
     @Override
+    @Transactional
     public CartResponse addItem(String cartId, AddItemRequest request) {
-
-        log.info("Adding item to cart {}: code={}, quantity={}",
-                cartId, request.getCode(), request.getQuantity());
+        log.info("Adding item to cart {}: code={}, quantity={}", cartId, request.getProductCode(), request.getQuantity());
 
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new CartNotFoundException("Cart not found: " + cartId));
 
-        ProductDto product = validateProduct(request.getCode());
+        ProductDto product = validateProduct(request.getProductCode());
 
-        boolean isAvailable = validateAvailability(request.getCode(), request.getQuantity());
+        boolean isAvailable = validateAvailability(request.getProductCode(), request.getQuantity());
         if (!isAvailable) {
             throw new InvalidCartOperationException(
-                    "Product " + request.getCode() + " is not available in requested quantity");
+                    "Product " + request.getProductCode() + " is not available in requested quantity");
         }
 
         if (cart.getTotalItems() + request.getQuantity() > maxItems) {
-            throw new InvalidCartOperationException(
-                    "Cannot add item. Cart limit of " + maxItems);
+            throw new InvalidCartOperationException("Cannot add item. Cart limit of " + maxItems);
         }
 
         CartItem cartItem = CartItem.builder()
                 .id(CartItem.generateItemId())
-                .code(product.getCode())
+                .productCode(product.getProductCode())
                 .name(product.getName())
                 .imageUrl(product.getImageUrl())
                 .quantity(request.getQuantity())
@@ -102,33 +104,31 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartResponse updateItemQuantity(String cartId, String productId, UpdateQuantityRequest request) {
-        log.info("Updating item quantity in cart {}: productId={}, newQuantity={}",
-                cartId, productId, request.getQuantity());
+    @Transactional
+    public CartResponse updateItemQuantity(String cartId, String productCode, UpdateQuantityRequest request) {
+        log.info("Updating item quantity in cart {}: productCode={}, newQuantity={}", cartId, productCode, request.getQuantity());
 
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new CartNotFoundException("Cart not found: " + cartId));
 
         // Validation via Catalog
-        boolean isAvailable = validateAvailability(productId, request.getQuantity());
+        boolean isAvailable = validateAvailability(productCode, request.getQuantity());
         if (!isAvailable) {
-            throw new InvalidCartOperationException(
-                    "Product not available in requested quantity");
+            throw new InvalidCartOperationException("Product not available in requested quantity");
         }
 
         boolean productExists = false;
         for (CartItem item : cart.getItems()) {
-            if (item.getCode().equals(productId)) {
+            if (item.getProductCode().equals(productCode)) {
                 productExists = true;
                 break;
             }
         }
         if (!productExists) {
-            throw new InvalidCartOperationException(
-                    "Product not found in cart: " + productId);
+            throw new InvalidCartOperationException("Product not found in cart: " + productCode);
         }
 
-        cart.updateItemQuantity(productId, request.getQuantity());
+        cart.updateItemQuantity(productCode, request.getQuantity());
 
         Cart savedCart = cartRepository.save(cart);
 
@@ -138,14 +138,15 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartResponse removeItem(String cartId, String productId) {
+    @Transactional
+    public CartResponse removeItem(String cartId, String productCode) {
 
-        log.info("Removing item from cart {}: productId={}", cartId, productId);
+        log.info("Removing item from cart {}: productCode={}", cartId, productCode);
 
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new CartNotFoundException("Cart not found: " + cartId));
 
-        cart.removeItem(productId);
+        cart.removeItem(productCode);
 
         Cart savedCart = cartRepository.save(cart);
 
@@ -155,6 +156,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @Transactional
     public void clearCart(String cartId) {
         log.info("Clearing cart: {}", cartId);
 
@@ -168,6 +170,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @Transactional
     public void deleteCart(String cartId) {
         log.info("Deleting cart: {}", cartId);
         if (!cartRepository.existsById(cartId)) {
@@ -177,15 +180,15 @@ public class CartServiceImpl implements CartService {
         log.info("Cart deleted successfully: {}", cartId);
     }
 
-    private ProductDto validateProduct(String productId) {
+    private ProductDto validateProduct(String productCode) {
         try {
-            log.debug("Validating product via Catalog Service: {}", productId);
-            ProductDto product = productClient.getProduct(productId);
+            log.debug("Validating product via Catalog Service: {}", productCode);
+            ProductDto product = productClient.getProduct(productCode);
             log.debug("Product validated: {}", product.getName());
             return product;
         } catch (FeignException.NotFound e) {
-            log.error("Product not found in catalog: {}", productId);
-            throw new InvalidCartOperationException("Product not found: " + productId);
+            log.error("Product not found in catalog: {}", productCode);
+            throw new InvalidCartOperationException("Product not found: " + productCode);
         } catch (FeignException e) {
             log.error("Error communicating with Catalog Service: {}", e.getMessage());
             throw new InvalidCartOperationException(
@@ -193,10 +196,10 @@ public class CartServiceImpl implements CartService {
         }
     }
 
-    private boolean validateAvailability(String productId, int quantity) {
+    private boolean validateAvailability(String productCode, int quantity) {
         try {
-            log.debug("Checking availability: productId={}, quantity={}", productId, quantity);
-            return productClient.checkAvailability(productId, quantity);
+            log.debug("Checking availability: productCode={}, quantity={}", productCode, quantity);
+            return productClient.checkAvailability(productCode, quantity);
         } catch (FeignException e) {
             log.error("Error checking availability: {}", e.getMessage());
             // En cas d'erreur, on refuse l'ajout (fail-safe)

@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(name = "catalog-service",fallback = ProductClientFallback.class)
 public interface ProductClient {
 
-    @GetMapping("/api/v1/products/{productId}")
+    @GetMapping("/api/v1/products/{productCode}")
     @CircuitBreaker(name = "productService", fallbackMethod = "getProductFallback")
     @Retry(name = "productService")
-    ProductDto getProduct(@PathVariable("productId") String productId);
+    ProductDto getProduct(@PathVariable("productCode") String productCode);
 
-    @GetMapping("/api/v1/products/{productId}/availability")
+    @GetMapping("/api/v1/products/{productCode}/availability")
     @CircuitBreaker(name = "productService")
     @Retry(name = "productService")
-    Boolean checkAvailability(@PathVariable("productId") String productId, @RequestParam("quantity") int quantity);
+    Boolean checkAvailability(@PathVariable("productCode") String productCode, @RequestParam("quantity") int quantity);
 }

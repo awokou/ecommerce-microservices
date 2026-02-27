@@ -1,10 +1,8 @@
 package com.server.userservice.domain.entity;
 
+import com.server.userservice.domain.audit.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,13 +10,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
+
 @Data
 @Builder
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
-public class User implements UserDetails {
+@EqualsAndHashCode(callSuper = true)
+public class User extends BaseEntity implements UserDetails  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

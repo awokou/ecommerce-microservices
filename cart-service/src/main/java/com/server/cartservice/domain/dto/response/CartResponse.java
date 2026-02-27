@@ -10,16 +10,17 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class CartResponse {
-    private String cartId;
+    private String id;
     private String userId;
-    private List<CartItemResponse> items;
     private int totalItems;
     private BigDecimal subtotal;
     private BigDecimal total;
+    private List<CartItemResponse> items;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
 }

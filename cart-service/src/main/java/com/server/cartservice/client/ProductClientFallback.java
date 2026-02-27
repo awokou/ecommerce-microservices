@@ -11,11 +11,11 @@ import java.math.BigDecimal;
 public class ProductClientFallback implements ProductClient {
 
     @Override
-    public ProductDto getProduct(String code) {
-        log.warn("Fallback: Catalog Service unavailable for product: {}", code);
+    public ProductDto getProduct(String productCode) {
+        log.warn("Fallback: Catalog Service unavailable for product: {}", productCode);
 
         return ProductDto.builder()
-                .code(code)
+                .productCode(productCode)
                 .name("Product temporarily unavailable")
                 .description("Please try again later")
                 .price(BigDecimal.ZERO)
@@ -25,8 +25,8 @@ public class ProductClientFallback implements ProductClient {
     }
 
     @Override
-    public Boolean checkAvailability(String productId, int quantity) {
-        log.warn("Fallback: Catalog Service unavailable for availability check: {}", productId);
+    public Boolean checkAvailability(String productCode, int quantity) {
+        log.warn("Fallback: Catalog Service unavailable for availability check: {}", productCode);
         return false;
     }
 }

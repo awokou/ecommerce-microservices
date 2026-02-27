@@ -19,17 +19,8 @@ import java.util.UUID;
 public class Cart implements Serializable {
 
     @Id
-    private String cartId;
-
+    private String id;
     private String userId;
-
-    @ElementCollection
-    @CollectionTable(
-            name = "cart_items",
-            joinColumns = @JoinColumn(name = "cart_id")
-    )
-    private List<CartItem> items = new ArrayList<>();
-
     private BigDecimal totalPrice;
     private BigDecimal subtotal;
     private BigDecimal total;
@@ -38,9 +29,20 @@ public class Cart implements Serializable {
     private LocalDateTime updatedAt;
     private LocalDateTime expiresAt;
 
+    @Builder.Default
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+    @JoinColumn(name = "cart_id")
+    private List<CartItem> items = new ArrayList<>();
+
+
+
     public void addItem(CartItem newItem) {
         CartItem existingItem = items.stream()
-                .filter(item -> item.getCode().equals(newItem.getCode()))
+                .filter(item -> item.getProductCode().equals(newItem.getProductCode()))
                 .findFirst()
                 .orElse(null);
 
@@ -54,15 +56,15 @@ public class Cart implements Serializable {
         calculateTotals();
     }
 
-    public void removeItem(String productId) {
-        this.items.removeIf(item -> item.getCode().equals(productId));
+    public void removeItem(String productCode) {
+        this.items.removeIf(item -> item.getProductCode().equals(productCode));
         this.updatedAt = LocalDateTime.now();
         calculateTotals();
     }
 
-    public void updateItemQuantity(String productId, int quantity) {
+    public void updateItemQuantity(String productCode, int quantity) {
         CartItem updatedItem =  items.stream()
-                .filter(item -> item.getCode().equals(productId))
+                .filter(item -> item.getProductCode().equals(productCode))
                 .findFirst()
                 .orElse(null);
         if (updatedItem != null) {
@@ -98,6 +100,6 @@ public class Cart implements Serializable {
     }
 
     public static String generateCartId() {
-        return "CART-" + UUID.randomUUID().toString();
+        return "CART-" + UUID.randomUUID();
     }
 }

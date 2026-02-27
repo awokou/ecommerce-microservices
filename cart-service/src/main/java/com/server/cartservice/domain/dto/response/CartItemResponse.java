@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class CartItemResponse {
     private String id;
-    private String code;
+    private String productCode;
     private String name;
     private String imageUrl;
     private int quantity;

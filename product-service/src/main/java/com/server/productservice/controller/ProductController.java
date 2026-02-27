@@ -24,24 +24,24 @@ public class ProductController {
     @Operation(summary = "Create a new product")
     @PostMapping
     public ResponseEntity<ProductResponse> createProduct(@Valid @RequestBody ProductRequest request) {
-        log.info("Rest request to create product: {}", request.getCode());
+        log.info("Rest request to create product: {}", request.getProductCode());
         ProductResponse product = productService.createProduct(request);
         return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
 
     @Operation(summary = "Get product by ID")
-    @GetMapping("/{code}")
-    public ResponseEntity<ProductResponse> getProduct(@PathVariable String code) {
-        log.info("Rest request to get product: {}", code);
-        ProductResponse product = productService.getProduct(code);
+    @GetMapping("/{productCode}")
+    public ResponseEntity<ProductResponse> getProduct(@PathVariable String productCode) {
+        log.info("Rest request to get product: {}", productCode);
+        ProductResponse product = productService.getProduct(productCode);
         return ResponseEntity.ok(product);
     }
 
     @Operation(summary = "Get all products by name")
-    @GetMapping("/{name}")
-    public ResponseEntity<List<ProductResponse>> getAllProductsByName(@PathVariable String name) {
-        log.info("Rest request to get all products by name: {}", name);
-        List<ProductResponse> product = productService.getAllProductsByName(name);
+    @GetMapping("/{productName}")
+    public ResponseEntity<List<ProductResponse>> getAllProductsByName(@PathVariable String productName) {
+        log.info("Rest request to get all products by name: {}", productName);
+        List<ProductResponse> product = productService.getAllProductsByName(productName);
         return ResponseEntity.ok(product);
     }
 
@@ -70,26 +70,26 @@ public class ProductController {
     }
 
     @Operation(summary = "Check product availability")
-    @GetMapping("/{code}/availability")
-    public ResponseEntity<Boolean> checkAvailability(@PathVariable String code, @RequestParam int quantity) {
-        log.info("Rest request to check availability: code={}, quantity={}", code, quantity);
-        boolean available = productService.isProductAvailable(code, quantity);
+    @GetMapping("/{productCode}/availability")
+    public ResponseEntity<Boolean> checkAvailability(@PathVariable String productCode, @RequestParam int quantity) {
+        log.info("Rest request to check availability: productCode={}, quantity={}", productCode, quantity);
+        boolean available = productService.isProductAvailable(productCode, quantity);
         return ResponseEntity.ok(available);
     }
 
     @Operation(summary = "Update product")
-    @PutMapping("/{code}")
-    public ResponseEntity<ProductResponse> updateProduct(@PathVariable String code, @Valid @RequestBody ProductRequest request) {
-        log.info("Rest request to update product: {}", code);
-        ProductResponse product = productService.updateProduct(code, request);
+    @PutMapping("/{productCode}")
+    public ResponseEntity<ProductResponse> updateProduct(@PathVariable String productCode, @Valid @RequestBody ProductRequest request) {
+        log.info("Rest request to update product: {}", productCode);
+        ProductResponse product = productService.updateProduct(productCode, request);
         return ResponseEntity.ok(product);
     }
 
     @Operation(summary = "Delete product")
-    @DeleteMapping("/{code}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable String code) {
-        log.info("Rest request to delete product: {}", code);
-        productService.deleteProduct(code);
+    @DeleteMapping("/{productCode}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable String productCode) {
+        log.info("Rest request to delete product: {}", productCode);
+        productService.deleteProduct(productCode);
         return ResponseEntity.noContent().build();
     }
 }

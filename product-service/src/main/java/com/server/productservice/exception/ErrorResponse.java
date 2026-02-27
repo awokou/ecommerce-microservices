@@ -1,4 +1,4 @@
-package com.server.userservice.exception;
+package com.server.productservice.exception;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;

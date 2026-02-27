@@ -6,32 +6,42 @@ import com.server.cartservice.domain.entity.Cart;
 import com.server.cartservice.domain.entity.CartItem;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class CartMapper {
 
     public CartResponse mapToResponse(Cart cart) {
-        List<CartItemResponse> itemResponses = cart.getItems().stream()
-                .map(this::mapItemToResponse)
-                .collect(Collectors.toList());
+        if (cart == null) {
+            return null;
+        }
+        List<CartItemResponse> itemResponses =
+                cart.getItems() == null
+                        ? Collections.emptyList()
+                        : cart.getItems()
+                        .stream()
+                        .map(this::mapItemToResponse)
+                        .toList();
 
         return CartResponse.builder()
-                .cartId(cart.getCartId())
+                .id(cart.getId())
                 .userId(cart.getUserId())
                 .items(itemResponses)
-                .totalItems(cart.getTotalItems())
                 .subtotal(cart.getSubtotal())
                 .total(cart.getTotal())
+                .totalItems(cart.getTotalItems())
                 .createdAt(cart.getCreatedAt())
                 .updatedAt(cart.getUpdatedAt())
                 .build();
     }
     public CartItemResponse mapItemToResponse(CartItem item) {
+        if (item == null) {
+            return null;
+        }
         return CartItemResponse.builder()
                 .id(item.getId())
-                .code(item.getCode())
+                .productCode(item.getProductCode())
                 .name(item.getName())
                 .imageUrl(item.getImageUrl())
                 .quantity(item.getQuantity())

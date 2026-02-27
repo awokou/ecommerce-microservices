@@ -14,15 +14,15 @@ import java.util.UUID;
 
 @Data
 @Entity
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Table(name = "cart_items")
 public class CartItem implements Serializable {
 
     @Id
     private String id;
-    private String code;
+    private String productCode;
     private String name;
     private String imageUrl;
     private int quantity;
@@ -31,6 +31,9 @@ public class CartItem implements Serializable {
     private boolean available;
 
     public BigDecimal getLineTotal() {
+        if (unitPrice == null || quantity <= 0) {
+            return BigDecimal.ZERO;
+        }
         return unitPrice.multiply(BigDecimal.valueOf(quantity));
     }
 

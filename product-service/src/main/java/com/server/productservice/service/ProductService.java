@@ -9,19 +9,19 @@ public interface ProductService {
 
     ProductResponse createProduct(ProductRequest request);
 
-    ProductResponse getProduct(String code);
+    ProductResponse getProduct(String productCode);
 
     List<ProductResponse> getAllProducts();
 
     List<ProductResponse> getProductsByCategory(String category);
 
-    List<ProductResponse> getAllProductsByName(String name);
+    List<ProductResponse> getAllProductsByName(String productName);
 
     List<ProductResponse> getAllAvailableTrue();
 
-    ProductResponse updateProduct(String code, ProductRequest request);
+    ProductResponse updateProduct(String productCode, ProductRequest request);
 
-    void deleteProduct(String code);
+    void deleteProduct(String productCode);
 
-    boolean isProductAvailable(String code, int quantity);
+    boolean isProductAvailable(String productCode, int quantity);
 }
