@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddItemRequest {
+public class AddLineRequest {
 
     @NotBlank(message = "Product Code Is required")
     private String productCode;

@@ -1,6 +1,6 @@
 package com.server.cartservice.service;
 
-import com.server.cartservice.domain.dto.request.AddItemRequest;
+import com.server.cartservice.domain.dto.request.AddLineRequest;
 import com.server.cartservice.domain.dto.request.UpdateQuantityRequest;
 import com.server.cartservice.domain.dto.response.CartResponse;
 
@@ -10,11 +10,11 @@ public interface CartService {
 
     CartResponse getCart(String cartId);
 
-    CartResponse addItem(String cartId, AddItemRequest request);
+    CartResponse addLine(String cartId, AddLineRequest request);
 
-    CartResponse updateItemQuantity(String cartId, String productCode, UpdateQuantityRequest request);
+    CartResponse updateLineQuantity(String cartId, String productCode, UpdateQuantityRequest request);
 
-    CartResponse removeItem(String cartId, String productCode);
+    CartResponse removeLine(String cartId, String productCode);
 
     void clearCart(String cartId);
 

@@ -21,8 +21,8 @@ spring:
 
 cart:
   ttl-days: 7
-  max-items: 100
-  max-quantity-per-item: 99
+  max-lines: 100
+  max-quantity-per-line: 99
 
 eureka:
   client:
@@ -48,3 +48,8 @@ resilience4j:
       productService:
         maxAttempts: 3
         waitDuration: 1s
+
+application:
+  config:
+    user-url: http://localhost:8083/api/v1/users
+    product-url: http://localhost:8081/api/v1/products

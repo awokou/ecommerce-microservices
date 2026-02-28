@@ -2,11 +2,11 @@ package com.server.cartservice.service.impl;
 
 import com.server.cartservice.client.ProductClient;
 import com.server.cartservice.domain.dto.external.ProductDto;
-import com.server.cartservice.domain.dto.request.AddItemRequest;
+import com.server.cartservice.domain.dto.request.AddLineRequest;
 import com.server.cartservice.domain.dto.request.UpdateQuantityRequest;
 import com.server.cartservice.domain.dto.response.CartResponse;
 import com.server.cartservice.domain.entity.Cart;
-import com.server.cartservice.domain.entity.CartItem;
+import com.server.cartservice.domain.entity.CartLine;
 import com.server.cartservice.exception.CartNotFoundException;
 import com.server.cartservice.exception.InvalidCartOperationException;
 import com.server.cartservice.mapper.CartMapper;
@@ -26,8 +26,8 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
 
-    @Value("${cart.max-items}")
-    private int maxItems;
+    @Value("${cart.max-lines}")
+    private int maxLines;
 
     @Value("${cart.ttl-days}")
     private long timeBeforeCartToExpire;
@@ -41,7 +41,6 @@ public class CartServiceImpl implements CartService {
     public CartResponse createCart(String userId) {
         log.info("Creating new Cart for user : {}", userId);
         Cart cart = Cart.builder()
-                .id(Cart.generateCartId())
                 .userId(userId)
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
@@ -66,8 +65,8 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional
-    public CartResponse addItem(String cartId, AddItemRequest request) {
-        log.info("Adding item to cart {}: code={}, quantity={}", cartId, request.getProductCode(), request.getQuantity());
+    public CartResponse addLine(String cartId, AddLineRequest request) {
+        log.info("Adding line to cart {}: code={}, quantity={}", cartId, request.getProductCode(), request.getQuantity());
 
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new CartNotFoundException("Cart not found: " + cartId));
@@ -80,12 +79,11 @@ public class CartServiceImpl implements CartService {
                     "Product " + request.getProductCode() + " is not available in requested quantity");
         }
 
-        if (cart.getTotalItems() + request.getQuantity() > maxItems) {
-            throw new InvalidCartOperationException("Cannot add item. Cart limit of " + maxItems);
+        if (cart.getTotalLines() + request.getQuantity() > maxLines) {
+            throw new InvalidCartOperationException("Cannot add line. Cart limit of " + maxLines);
         }
 
-        CartItem cartItem = CartItem.builder()
-                .id(CartItem.generateItemId())
+        CartLine cartItem = CartLine.builder()
                 .productCode(product.getProductCode())
                 .name(product.getName())
                 .imageUrl(product.getImageUrl())
@@ -94,19 +92,19 @@ public class CartServiceImpl implements CartService {
                 .available(true)
                 .build();
 
-        cart.addItem(cartItem);
+        cart.addLine(cartItem);
 
         Cart savedCart = cartRepository.save(cart);
 
-        log.info("Item added to cart....!! {}", cartId);
+        log.info("Line added to cart....!! {}", cartId);
 
         return cartMapper.mapToResponse(savedCart);
     }
 
     @Override
     @Transactional
-    public CartResponse updateItemQuantity(String cartId, String productCode, UpdateQuantityRequest request) {
-        log.info("Updating item quantity in cart {}: productCode={}, newQuantity={}", cartId, productCode, request.getQuantity());
+    public CartResponse updateLineQuantity(String cartId, String productCode, UpdateQuantityRequest request) {
+        log.info("Updating line quantity in cart {}: productCode={}, newQuantity={}", cartId, productCode, request.getQuantity());
 
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new CartNotFoundException("Cart not found: " + cartId));
@@ -118,7 +116,7 @@ public class CartServiceImpl implements CartService {
         }
 
         boolean productExists = false;
-        for (CartItem item : cart.getItems()) {
+        for (CartLine item : cart.getCartLines()) {
             if (item.getProductCode().equals(productCode)) {
                 productExists = true;
                 break;
@@ -128,29 +126,29 @@ public class CartServiceImpl implements CartService {
             throw new InvalidCartOperationException("Product not found in cart: " + productCode);
         }
 
-        cart.updateItemQuantity(productCode, request.getQuantity());
+        cart.updateLineQuantity(productCode, request.getQuantity());
 
         Cart savedCart = cartRepository.save(cart);
 
-        log.info("Item quantity updated...!!! in cart {}", cartId);
+        log.info("Line quantity updated...!!! in cart {}", cartId);
 
         return cartMapper.mapToResponse(savedCart);
     }
 
     @Override
     @Transactional
-    public CartResponse removeItem(String cartId, String productCode) {
+    public CartResponse removeLine(String cartId, String productCode) {
 
-        log.info("Removing item from cart {}: productCode={}", cartId, productCode);
+        log.info("Removing line from cart {}: productCode={}", cartId, productCode);
 
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new CartNotFoundException("Cart not found: " + cartId));
 
-        cart.removeItem(productCode);
+        cart.removeLine(productCode);
 
         Cart savedCart = cartRepository.save(cart);
 
-        log.info("Item removed successfully from cart {}", cartId);
+        log.info("Line removed successfully from cart {}", cartId);
 
         return cartMapper.mapToResponse(savedCart);
     }

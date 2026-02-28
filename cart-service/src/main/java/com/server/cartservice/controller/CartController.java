@@ -1,6 +1,6 @@
 package com.server.cartservice.controller;
 
-import com.server.cartservice.domain.dto.request.AddItemRequest;
+import com.server.cartservice.domain.dto.request.AddLineRequest;
 import com.server.cartservice.domain.dto.request.UpdateQuantityRequest;
 import com.server.cartservice.domain.dto.response.CartResponse;
 import com.server.cartservice.service.CartService;
@@ -27,10 +27,10 @@ public class CartController {
         return new ResponseEntity<>(cart, HttpStatus.CREATED);
     }
 
-    @PostMapping("/{cartId}/items")
-    public ResponseEntity<CartResponse> addItem(@PathVariable String cartId, @Valid @RequestBody AddItemRequest request) {
-        log.info("REST request to add item to cart {}: {}", cartId, request);
-        CartResponse cart = cartService.addItem(cartId, request);
+    @PostMapping("/{cartId}/lines")
+    public ResponseEntity<CartResponse> addLine(@PathVariable String cartId, @Valid @RequestBody AddLineRequest request) {
+        log.info("REST request to add line to cart {}: {}", cartId, request);
+        CartResponse cart = cartService.addLine(cartId, request);
         return ResponseEntity.ok(cart);
     }
 
@@ -42,21 +42,21 @@ public class CartController {
     }
 
 
-    @PutMapping("/{cartId}/items/{productCode}")
-    public ResponseEntity<CartResponse> updateItemQuantity(@PathVariable String cartId, @PathVariable String productCode, @Valid @RequestBody UpdateQuantityRequest request) {
+    @PutMapping("/{cartId}/lines/{productCode}")
+    public ResponseEntity<CartResponse> updateLineQuantity(@PathVariable String cartId, @PathVariable String productCode, @Valid @RequestBody UpdateQuantityRequest request) {
         log.info("REST request to update quantity in cart {}: productCode={}, quantity={}", cartId, productCode, request.getQuantity());
-        CartResponse cart = cartService.updateItemQuantity(cartId, productCode, request);
+        CartResponse cart = cartService.updateLineQuantity(cartId, productCode, request);
         return ResponseEntity.ok(cart);
     }
 
-    @DeleteMapping("/{cartId}/items/{productCode}")
-    public ResponseEntity<CartResponse> removeItem(@PathVariable String cartId, @PathVariable String productCode) {
-        log.info("REST request to remove item from cart {}: code={}", cartId, productCode);
-        CartResponse cart = cartService.removeItem(cartId, productCode);
+    @DeleteMapping("/{cartId}/lines/{productCode}")
+    public ResponseEntity<CartResponse> removeLine(@PathVariable String cartId, @PathVariable String productCode) {
+        log.info("REST request to remove line from cart {}: code={}", cartId, productCode);
+        CartResponse cart = cartService.removeLine(cartId, productCode);
         return ResponseEntity.ok(cart);
     }
 
-    @DeleteMapping("/{cartId}/items")
+    @DeleteMapping("/{cartId}/lines")
     public ResponseEntity<Void> clearCart(@PathVariable String cartId) {
         log.info("REST request to clear cart: {}", cartId);
         cartService.clearCart(cartId);

@@ -1,9 +1,9 @@
 package com.server.cartservice.mapper;
 
-import com.server.cartservice.domain.dto.response.CartItemResponse;
+import com.server.cartservice.domain.dto.response.CartLineResponse;
 import com.server.cartservice.domain.dto.response.CartResponse;
 import com.server.cartservice.domain.entity.Cart;
-import com.server.cartservice.domain.entity.CartItem;
+import com.server.cartservice.domain.entity.CartLine;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -16,38 +16,38 @@ public class CartMapper {
         if (cart == null) {
             return null;
         }
-        List<CartItemResponse> itemResponses =
-                cart.getItems() == null
+        List<CartLineResponse> cartLineResponses =
+                cart.getCartLines() == null
                         ? Collections.emptyList()
-                        : cart.getItems()
+                        : cart.getCartLines()
                         .stream()
-                        .map(this::mapItemToResponse)
+                        .map(this::mapLineToResponse)
                         .toList();
 
         return CartResponse.builder()
                 .id(cart.getId())
                 .userId(cart.getUserId())
-                .items(itemResponses)
+                .cartLineResponses(cartLineResponses)
                 .subtotal(cart.getSubtotal())
                 .total(cart.getTotal())
-                .totalItems(cart.getTotalItems())
+                .totalItems(cart.getTotalLines())
                 .createdAt(cart.getCreatedAt())
                 .updatedAt(cart.getUpdatedAt())
                 .build();
     }
-    public CartItemResponse mapItemToResponse(CartItem item) {
-        if (item == null) {
+    public CartLineResponse mapLineToResponse(CartLine line) {
+        if (line == null) {
             return null;
         }
-        return CartItemResponse.builder()
-                .id(item.getId())
-                .productCode(item.getProductCode())
-                .name(item.getName())
-                .imageUrl(item.getImageUrl())
-                .quantity(item.getQuantity())
-                .unitPrice(item.getUnitPrice())
-                .lineTotal(item.getLineTotal())
-                .available(item.isAvailable())
+        return CartLineResponse.builder()
+                .id(line.getId())
+                .productCode(line.getProductCode())
+                .name(line.getName())
+                .imageUrl(line.getImageUrl())
+                .quantity(line.getQuantity())
+                .unitPrice(line.getUnitPrice())
+                .lineTotal(line.getLineTotal())
+                .available(line.isAvailable())
                 .build();
     }
 }

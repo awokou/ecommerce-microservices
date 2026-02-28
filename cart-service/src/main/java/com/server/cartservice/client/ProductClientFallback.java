@@ -12,8 +12,7 @@ public class ProductClientFallback implements ProductClient {
 
     @Override
     public ProductDto getProduct(String productCode) {
-        log.warn("Fallback: Catalog Service unavailable for product: {}", productCode);
-
+        log.warn("Fallback: Product Service unavailable for product: {}", productCode);
         return ProductDto.builder()
                 .productCode(productCode)
                 .name("Product temporarily unavailable")
@@ -26,7 +25,7 @@ public class ProductClientFallback implements ProductClient {
 
     @Override
     public Boolean checkAvailability(String productCode, int quantity) {
-        log.warn("Fallback: Catalog Service unavailable for availability check: {}", productCode);
+        log.warn("Fallback: Product Service unavailable for availability check: {}", productCode);
         return false;
     }
 }

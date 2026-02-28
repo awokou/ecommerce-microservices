@@ -12,6 +12,16 @@ spring:
             locator:
               enabled: true
           routes:
+            - id: product-service
+              uri: lb://PRODUCT-SERVICE
+              predicates:
+                - Path=/api/v1/products/**
+              filters:
+                - name: CircuitBreaker
+                  args:
+                    name: productServiceCB
+                    fallbackUri: forward:/fallback/products
+
             - id: cart-service
               uri: lb://CART-SERVICE
               predicates:
@@ -21,15 +31,6 @@ spring:
                   args:
                     name: cartServiceCB
                     fallbackUri: forward:/fallback/cart
-            - id: product-service
-              uri: lb://CATALOG-SERVICE
-              predicates:
-                - Path=/api/v1/products/**
-              filters:
-                - name: CircuitBreaker
-                  args:
-                    name: productServiceCB
-                    fallbackUri: forward:/fallback/products
 
 management:
   endpoints:
@@ -45,11 +46,11 @@ management:
 resilience4j:
   circuitbreaker:
     instances:
-      cartServiceCB:
+      productServiceCB:
         slidingWindowSize: 10
         failureRateThreshold: 50
         waitDurationInOpenState: 10s
-      productServiceCB:
+      cartServiceCB:
         slidingWindowSize: 10
         failureRateThreshold: 50
         waitDurationInOpenState: 10s

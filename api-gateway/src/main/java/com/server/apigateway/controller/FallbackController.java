@@ -15,18 +15,6 @@ import java.util.Map;
 @RequestMapping("/fallback")
 public class FallbackController {
 
-    @GetMapping("/cart")
-    @PostMapping("/cart")
-    public ResponseEntity<Map<String, Object>> cartFallback() {
-        Map<String, Object> response = new HashMap<>();
-        response.put("timestamp", LocalDateTime.now());
-        response.put("status", HttpStatus.SERVICE_UNAVAILABLE.value());
-        response.put("error", "Service Unavailable");
-        response.put("message", "Cart Service is temporarily unavailable. Please try again later.");
-
-        return new ResponseEntity<>(response, HttpStatus.SERVICE_UNAVAILABLE);
-    }
-
     @GetMapping("/products")
     @PostMapping("/products")
     public ResponseEntity<Map<String, Object>> productFallback() {
@@ -35,6 +23,18 @@ public class FallbackController {
         response.put("status", HttpStatus.SERVICE_UNAVAILABLE.value());
         response.put("error", "Service Unavailable");
         response.put("message", "Product Service is temporarily unavailable. Please try again later.");
+
+        return new ResponseEntity<>(response, HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
+    @GetMapping("/cart")
+    @PostMapping("/cart")
+    public ResponseEntity<Map<String, Object>> cartFallback() {
+        Map<String, Object> response = new HashMap<>();
+        response.put("timestamp", LocalDateTime.now());
+        response.put("status", HttpStatus.SERVICE_UNAVAILABLE.value());
+        response.put("error", "Service Unavailable");
+        response.put("message", "Cart Service is temporarily unavailable. Please try again later.");
 
         return new ResponseEntity<>(response, HttpStatus.SERVICE_UNAVAILABLE);
     }

@@ -14,13 +14,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CartResponse {
-    private String id;
+    private Long id;
     private String userId;
     private int totalItems;
     private BigDecimal subtotal;
     private BigDecimal total;
-    private List<CartItemResponse> items;
+    private List<CartLineResponse> cartLineResponses;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-
 }

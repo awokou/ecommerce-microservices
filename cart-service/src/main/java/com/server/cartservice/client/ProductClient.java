@@ -8,15 +8,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "catalog-service",fallback = ProductClientFallback.class)
+@FeignClient(name = "product-service", fallback = ProductClientFallback.class, url = "${application.config.product-url}")
 public interface ProductClient {
 
-    @GetMapping("/api/v1/products/{productCode}")
+    @GetMapping("/{productCode}")
     @CircuitBreaker(name = "productService", fallbackMethod = "getProductFallback")
     @Retry(name = "productService")
     ProductDto getProduct(@PathVariable("productCode") String productCode);
 
-    @GetMapping("/api/v1/products/{productCode}/availability")
+    @GetMapping("/{productCode}/availability")
     @CircuitBreaker(name = "productService")
     @Retry(name = "productService")
     Boolean checkAvailability(@PathVariable("productCode") String productCode, @RequestParam("quantity") int quantity);
