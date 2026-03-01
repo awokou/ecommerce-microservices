@@ -5,13 +5,18 @@ import com.server.userservice.domain.dto.request.RegisterRequest;
 import com.server.userservice.domain.dto.request.ResendEmailConfirmationRequest;
 import com.server.userservice.domain.dto.request.ResetPasswordRequest;
 import com.server.userservice.domain.dto.response.AuthResponse;
+import com.server.userservice.domain.dto.response.UserResponse;
 import com.server.userservice.domain.dto.response.ValidateTokenResponse;
+
+import java.util.List;
 
 public interface UserService {
 
     AuthResponse register(RegisterRequest request);
 
     AuthResponse login(LoginRequest request);
+
+    List<UserResponse> findAll();
 
     void verifyEmail(String token);
 

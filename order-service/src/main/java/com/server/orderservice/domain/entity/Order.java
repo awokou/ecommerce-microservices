@@ -1,6 +1,6 @@
 package com.server.orderservice.domain.entity;
 
-import com.server.orderservice.domain.enums.PaymentMethod;
+import com.server.orderservice.domain.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,24 +25,35 @@ public class Order implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String orderNumber;
+
     private String userId;
-    private String reference;
-    private BigDecimal totalPrice;
-    private BigDecimal subtotal;
-    private BigDecimal total;
 
     @Enumerated(EnumType.STRING)
-    private PaymentMethod paymentMethod;
+    private OrderStatus status;
+
+    private BigDecimal totalPrice;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
 
-    @OneToMany(
+    @OneToMany(mappedBy = "order",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.LAZY
     )
-    @JoinColumn(name = "order")
     private List<OrderLine> orderLines = new ArrayList<>();
+
+    public void increaseTotalPrice(BigDecimal value) {
+        setTotalPrice(this.totalPrice.add(value));
+    }
+
+    public void addItem(OrderLine orderItem) {
+        orderLines.add(orderItem);
+    }
+
+    public void removeItem(Long itemId) {
+        this.orderLines.removeIf(item -> item.getId().equals(itemId));
+    }
 }

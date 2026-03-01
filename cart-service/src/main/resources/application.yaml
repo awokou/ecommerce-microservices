@@ -18,6 +18,7 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: false
 
 cart:
   ttl-days: 7
@@ -53,3 +54,12 @@ application:
   config:
     user-url: http://localhost:8083/api/v1/users
     product-url: http://localhost:8081/api/v1/products
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always

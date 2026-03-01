@@ -2,6 +2,7 @@ package com.server.userservice.controller;
 
 import com.server.userservice.domain.dto.request.*;
 import com.server.userservice.domain.dto.response.AuthResponse;
+import com.server.userservice.domain.dto.response.UserResponse;
 import com.server.userservice.domain.dto.response.ValidateTokenResponse;
 import com.server.userservice.service.UserService;
 import com.server.userservice.utils.CommonUtil;
@@ -13,9 +14,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -37,6 +40,13 @@ public class UserController {
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
         log.info("Login request for username: {}", request.getEmail());
         AuthResponse response = userService.login(request);
+        return ResponseEntity.ok(response);
+    }
+
+    // Endpoint to get all users
+    @GetMapping
+    public ResponseEntity<List<UserResponse>> findAll() {
+        List<UserResponse> response = userService.findAll();
         return ResponseEntity.ok(response);
     }
 

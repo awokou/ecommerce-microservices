@@ -1,6 +1,5 @@
 package com.server.productservice.domain.entity;
 
-import com.server.productservice.domain.audit.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -1,4 +1,4 @@
-package com.server.userservice.domain.audit;
+package com.server.paymentservice.domain.entity;
 
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;

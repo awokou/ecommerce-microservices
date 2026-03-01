@@ -24,11 +24,14 @@ public class OrderLine implements Serializable {
     private String productCode;
     private String name;
     private String imageUrl;
+
+    @Column(name = "quantity", columnDefinition = "Integer default 0", nullable = false)
     private int quantity;
-    private BigDecimal unitPrice;
-    private boolean available;
+
+    @Column(name = "unit_price", columnDefinition = "Decimal(10,2) default '0.00'", nullable = false)
+    private BigDecimal unitPrice = BigDecimal.valueOf(0);
 
     @ManyToOne
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 }

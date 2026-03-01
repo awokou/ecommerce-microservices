@@ -128,15 +128,18 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public boolean isProductAvailable(String productId, int quantity) {
-        log.info("Checking availability for product {} with quantity {}", productId, quantity);
-        Product product = productRepository.findByCode(productId)
-                .orElseThrow(() -> new ProductNotFoundException("Product not found: " + productId));
+    public boolean isProductAvailable(String productCode, int quantity) {
+        log.info("Checking availability for product {} with quantity {}", productCode, quantity);
+        Product product = productRepository.findByCode(productCode)
+                .orElseThrow(() -> new ProductNotFoundException("Product not found: " + productCode));
 
         return product.getAvailable() && product.getStockQuantity() >= quantity;
     }
 
     private ProductResponse mapToResponse(Product product) {
+        if (product == null) {
+            return null;
+        }
         return ProductResponse.builder()
                 .id(product.getId())
                 .productCode(product.getCode())

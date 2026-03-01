@@ -1,6 +1,5 @@
 package com.server.userservice.domain.entity;
 
-import com.server.userservice.domain.audit.BaseEntity;
 import com.server.userservice.domain.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;

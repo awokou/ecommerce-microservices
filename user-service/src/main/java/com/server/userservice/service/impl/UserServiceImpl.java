@@ -5,6 +5,7 @@ import com.server.userservice.domain.dto.request.ResetPasswordRequest;
 import com.server.userservice.domain.dto.response.AuthResponse;
 import com.server.userservice.domain.dto.request.LoginRequest;
 import com.server.userservice.domain.dto.request.RegisterRequest;
+import com.server.userservice.domain.dto.response.UserResponse;
 import com.server.userservice.domain.dto.response.ValidateTokenResponse;
 import com.server.userservice.domain.entity.ConfirmationEmail;
 import com.server.userservice.domain.enums.ResultCode;
@@ -28,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -106,6 +108,14 @@ public class UserServiceImpl implements UserService {
             log.warn("Login attempt with non-existent email: {}", request.getEmail());
             throw new BadRequestException(ResultCode.AUTHENTICATION_FAILED);
         }
+    }
+
+    @Override
+    public List<UserResponse> findAll() {
+        return userRepository.findAll()
+                .stream()
+                .map(this::mapToUserResponse)
+                .toList();
     }
 
     @Override
@@ -239,5 +249,19 @@ public class UserServiceImpl implements UserService {
         }
 
         return confirmationEmail;
+    }
+
+    private UserResponse mapToUserResponse(User user) {
+        if (user == null) {
+            return null;
+        }
+        return UserResponse.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .email(user.getEmail())
+                .role(user.getRole().name())
+                .createdAt(user.getCreatedAt())
+                .updatedAt(user.getUpdatedAt())
+                .build();
     }
 }
