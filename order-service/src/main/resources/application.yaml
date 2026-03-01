@@ -53,3 +53,12 @@ management:
   endpoint:
     health:
       show-details: always
+
+custom:
+  config:
+    user:
+      url: http://localhost:8083/api/v1/users
+    product:
+      url: http://localhost:8081/api/v1/products
+    payment:
+      url: http://localhost:8085/api/v1/payments

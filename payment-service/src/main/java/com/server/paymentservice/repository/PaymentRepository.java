@@ -6,12 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
-    @Query("SELECT CASE " +
-            "WHEN COUNT(p) > 0 THEN TRUE " +
-            "ELSE FALSE " +
-            "END " +
-            "FROM Payment p " +
-            "WHERE p.orderId = :orderId " +
-            "AND p.isPayed = TRUE")
-    boolean existsByOrderIdAndIsPayed(Integer orderId);
+    @Query("SELECT p FROM Payment p WHERE p.orderId = :orderId")
+    Payment findByOrderId(Long orderId);
 }

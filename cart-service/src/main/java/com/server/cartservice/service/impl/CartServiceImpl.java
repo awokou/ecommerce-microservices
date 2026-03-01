@@ -9,7 +9,7 @@ import com.server.cartservice.domain.entity.Cart;
 import com.server.cartservice.domain.entity.CartLine;
 import com.server.cartservice.exception.CartNotFoundException;
 import com.server.cartservice.exception.InvalidCartOperationException;
-import com.server.cartservice.mapper.CartMapper;
+import com.server.cartservice.domain.mapper.CartMapper;
 import com.server.cartservice.repository.CartRepository;
 import com.server.cartservice.service.CartService;
 import feign.FeignException;

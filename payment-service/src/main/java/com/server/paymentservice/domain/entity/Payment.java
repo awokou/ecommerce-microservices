@@ -1,8 +1,10 @@
 package com.server.paymentservice.domain.entity;
 
-import com.server.paymentservice.domain.enums.PaymentStatus;
+import com.server.paymentservice.domain.enums.PaymentMethod;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.math.BigDecimal;
 
 @Data
 @Entity
@@ -11,11 +13,12 @@ import lombok.*;
 @NoArgsConstructor
 @Table(name = "payments")
 @EqualsAndHashCode(callSuper = true)
-public class Payment extends BaseEntity{
+public class Payment extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private BigDecimal amount;
 
     private Long orderId;
     private String userId;
@@ -23,6 +26,5 @@ public class Payment extends BaseEntity{
     private Boolean isPayed;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "payment_status")
-    private PaymentStatus paymentStatus;
+    private PaymentMethod paymentMethod;
 }

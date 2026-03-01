@@ -50,6 +50,13 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    // Endpoint to get user by ID
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserResponse> findAllById(@PathVariable Long userId) {
+        UserResponse response = userService.findAllById(userId);
+        return ResponseEntity.ok(response);
+    }
+
     // Endpoint for email verification with OTP
     @PostMapping("/verify-email/with-otp")
     public ResponseEntity<Void> verifyEmailWithOtp(@RequestBody @Valid VerifyEmailWithOtpRequest request) {

@@ -18,6 +18,8 @@ public interface UserService {
 
     List<UserResponse> findAll();
 
+    UserResponse findAllById(Long userId);
+
     void verifyEmail(String token);
 
     void forgotPassword(String email);

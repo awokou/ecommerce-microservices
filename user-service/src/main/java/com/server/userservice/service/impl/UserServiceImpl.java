@@ -13,6 +13,7 @@ import com.server.userservice.domain.enums.Role;
 import com.server.userservice.domain.entity.User;
 import com.server.userservice.exception.AlreadyExistException;
 import com.server.userservice.exception.BadRequestException;
+import com.server.userservice.exception.ResourceNotFoundException;
 import com.server.userservice.repository.ConfirmationEmailRepository;
 import com.server.userservice.repository.UserRepository;
 import com.server.userservice.security.JwtUtils;
@@ -116,6 +117,13 @@ public class UserServiceImpl implements UserService {
                 .stream()
                 .map(this::mapToUserResponse)
                 .toList();
+    }
+
+    @Override
+    public UserResponse findAllById(Long userId) {
+        return this.userRepository.findById(userId)
+                .map(this::mapToUserResponse)
+                .orElseThrow(() -> new ResourceNotFoundException("Not Found" + userId));
     }
 
     @Override

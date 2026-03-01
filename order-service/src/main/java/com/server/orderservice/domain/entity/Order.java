@@ -1,6 +1,6 @@
 package com.server.orderservice.domain.entity;
 
-import com.server.orderservice.domain.enums.OrderStatus;
+import com.server.orderservice.domain.enums.PaymentMethod;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,7 +30,7 @@ public class Order implements Serializable {
     private String userId;
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    private PaymentMethod paymentMethod;
 
     private BigDecimal totalPrice;
 

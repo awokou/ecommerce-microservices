@@ -21,6 +21,14 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: false
 
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.type.mapping: paymentNotificationToken:com.server.paymentservice.domain.dto.PaymentNotification
+
 # Eureka
 eureka:
   client:

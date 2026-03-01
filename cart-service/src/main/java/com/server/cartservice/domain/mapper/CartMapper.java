@@ -1,4 +1,4 @@
-package com.server.cartservice.mapper;
+package com.server.cartservice.domain.mapper;
 
 import com.server.cartservice.domain.dto.response.CartLineResponse;
 import com.server.cartservice.domain.dto.response.CartResponse;

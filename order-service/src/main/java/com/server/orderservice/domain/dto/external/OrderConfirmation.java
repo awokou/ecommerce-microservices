@@ -1,4 +1,4 @@
-package com.server.orderservice.event;
+package com.server.orderservice.domain.dto.external;
 
 import com.server.orderservice.domain.dto.response.PurchaseResponse;
 import com.server.orderservice.domain.dto.response.UserResponse;
