@@ -55,6 +55,11 @@ application:
     user-url: http://localhost:8083/api/v1/users
     product-url: http://localhost:8081/api/v1/products
 
+logging:
+  level:
+    org:
+      springframework: ERROR
+
 management:
   endpoints:
     web:

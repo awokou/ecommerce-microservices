@@ -67,7 +67,7 @@ management:
 
 logging:
   level:
-    com.ecommerce.auth: DEBUG
+    com.server.userservice: DEBUG
 
 client:
   base:

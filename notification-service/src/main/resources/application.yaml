@@ -43,6 +43,11 @@ eureka:
     prefer-ip-address: true
     instance-id: ${spring.application.name}:${server.port}
 
+logging:
+  level:
+    org:
+      springframework: ERROR
+
 app:
   mail:
     from: admin@gmail.com
