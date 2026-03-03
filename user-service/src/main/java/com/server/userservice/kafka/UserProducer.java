@@ -16,6 +16,8 @@ import static org.springframework.kafka.support.KafkaHeaders.TOPIC;
 public class UserProducer {
 
     public static  final String CONFIRM_REGISTRATION_TOPIC = "confirm-registration-user-topic";
+    public static  final String PASSWORD_RESET_TOPIC = "password-reset-email-topic";
+
     private final KafkaTemplate<String, NotificationEvent> kafkaTemplate;
 
     public void sendConfirmRegistrationAccount(NotificationEvent notificationEvent) {
@@ -24,6 +26,7 @@ public class UserProducer {
                 .withPayload(notificationEvent)
                 .setHeader(TOPIC, CONFIRM_REGISTRATION_TOPIC)
                 .build();
+
         kafkaTemplate.send(message);
     }
 
@@ -31,8 +34,9 @@ public class UserProducer {
         log.info("Sending forgot password email");
         Message<NotificationEvent> message = MessageBuilder
                 .withPayload(notificationEvent)
-                .setHeader(TOPIC, "password-reset-email-topic")
+                .setHeader(TOPIC, PASSWORD_RESET_TOPIC)
                 .build();
+
         kafkaTemplate.send(message);
     }
 }

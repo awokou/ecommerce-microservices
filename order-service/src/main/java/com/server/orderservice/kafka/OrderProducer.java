@@ -24,6 +24,6 @@ public class OrderProducer {
                 .setHeader(KafkaHeaders.TOPIC, KafkaOrderTopicConfig.ORDER_TOPIC)
                 .build();
 
-        this.kafkaTemplate.send(message);
+        kafkaTemplate.send(message);
     }
 }

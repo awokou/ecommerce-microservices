@@ -5,7 +5,6 @@ import lombok.*;
 
 import java.math.BigDecimal;
 
-
 @Data
 @Builder
 @Entity
@@ -34,11 +33,12 @@ public class Product extends BaseEntity {
     private String imageUrl;
 
     @Column(nullable = false)
-    private String category;
-
-    @Column(nullable = false)
     private Integer stockQuantity;
 
     @Column(nullable = false)
     private Boolean available;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 }

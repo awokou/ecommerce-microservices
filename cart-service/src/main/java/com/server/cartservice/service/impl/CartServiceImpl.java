@@ -38,7 +38,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional
-    public CartResponse createCart(String userId) {
+    public CartResponse createCart(Long userId) {
         log.info("Creating new Cart for user : {}", userId);
         Cart cart = Cart.builder()
                 .userId(userId)
@@ -55,7 +55,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional(readOnly = true)
-    public CartResponse getCart(String cartId) {
+    public CartResponse getCart(Long cartId) {
         log.info("Retrieving cart: {}", cartId);
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new CartNotFoundException("Cart not found: " + cartId));
@@ -65,7 +65,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional
-    public CartResponse addLine(String cartId, AddLineRequest request) {
+    public CartResponse addLine(Long cartId, AddLineRequest request) {
         log.info("Adding line to cart {}: code={}, quantity={}", cartId, request.getProductCode(), request.getQuantity());
 
         Cart cart = cartRepository.findById(cartId)
@@ -103,7 +103,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional
-    public CartResponse updateLineQuantity(String cartId, String productCode, UpdateQuantityRequest request) {
+    public CartResponse updateLineQuantity(Long cartId, String productCode, UpdateQuantityRequest request) {
         log.info("Updating line quantity in cart {}: productCode={}, newQuantity={}", cartId, productCode, request.getQuantity());
 
         Cart cart = cartRepository.findById(cartId)
@@ -137,7 +137,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional
-    public CartResponse removeLine(String cartId, String productCode) {
+    public CartResponse removeLine(Long cartId, String productCode) {
 
         log.info("Removing line from cart {}: productCode={}", cartId, productCode);
 
@@ -155,7 +155,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional
-    public void clearCart(String cartId) {
+    public void clearCart(Long cartId) {
         log.info("Clearing cart: {}", cartId);
 
         Cart cart = cartRepository.findById(cartId)
@@ -169,7 +169,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional
-    public void deleteCart(String cartId) {
+    public void deleteCart(Long cartId) {
         log.info("Deleting cart: {}", cartId);
         if (!cartRepository.existsById(cartId)) {
             throw new CartNotFoundException("Cart not found: " + cartId);

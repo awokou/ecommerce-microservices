@@ -6,17 +6,17 @@ import com.server.cartservice.domain.dto.response.CartResponse;
 
 public interface CartService {
 
-    CartResponse createCart(String userId);
+    CartResponse createCart(Long userId);
 
-    CartResponse getCart(String cartId);
+    CartResponse getCart(Long cartId);
 
-    CartResponse addLine(String cartId, AddLineRequest request);
+    CartResponse addLine(Long cartId, AddLineRequest request);
 
-    CartResponse updateLineQuantity(String cartId, String productCode, UpdateQuantityRequest request);
+    CartResponse updateLineQuantity(Long cartId, String productCode, UpdateQuantityRequest request);
 
-    CartResponse removeLine(String cartId, String productCode);
+    CartResponse removeLine(Long cartId, String productCode);
 
-    void clearCart(String cartId);
+    void clearCart(Long cartId);
 
-    void deleteCart(String cartId);
+    void deleteCart(Long cartId);
 }

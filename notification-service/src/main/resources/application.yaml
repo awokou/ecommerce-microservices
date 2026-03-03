@@ -30,8 +30,26 @@ spring:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
         spring.json.trusted.packages: '*'
-        spring.json.type.mapping: notificationEvent:com.server.userservice.domain.event.NotificationEvent
+        spring.json.type.mapping: notificationEvent:com.server.notificationservice.domain.dto.NotificationEvent, paymentNotificationToken:com.server.notificationservice.domain.dto.PaymentConfirmation, orderConfirmationToken:com.server.notificationservice.domain.dto.OrderConfirmation
 
+  mail:
+    host: localhost
+    port: 1025
+    username: magadiflo
+    password: magadiflo
+    default-encoding: UTF-8
+    properties:
+      mail:
+        mime:
+          charset: UTF-8
+        smtp:
+          trust: '*'
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
+          auth: true
+          starttls:
+            enable: true
 # Eureka
 eureka:
   client:
@@ -47,7 +65,3 @@ logging:
   level:
     org:
       springframework: ERROR
-
-app:
-  mail:
-    from: admin@gmail.com

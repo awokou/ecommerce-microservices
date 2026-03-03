@@ -54,21 +54,25 @@ public class UserServiceImpl implements UserService {
         }
         // Create new user
         var user = User.builder()
-                .name(request.getName())
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
                 .email(request.getEmail())
+                .phone(request.getPhone())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
                 .enabled(false)
                 .build();
 
         userRepository.save(user);
-        mailService.sendEmailConfirmation(user.getEmail(), user.getName());
+        mailService.sendConfirmRegistrationAccount(user.getEmail(), user.getFirstName() + " " + user.getLastName());
         var jwtToken = jwtUtils.generateToken(user);
         log.info("User registered successfully: {}", user.getUsername());
 
         return AuthResponse.builder()
-                .name(user.getName())
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
                 .email(user.getEmail())
+                .phone(user.getPhone())
                 .role(user.getRole().name())
                 .token(jwtToken)
                 .expiresIn(jwtUtils.getExpirationTime())
@@ -82,9 +86,7 @@ public class UserServiceImpl implements UserService {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             request.getEmail(),
-                            request.getPassword()
-                    )
-            );
+                            request.getPassword()));
 
             var user = userRepository.findByEmail(request.getEmail())
                     .orElseThrow(() -> new UsernameNotFoundException("User not found"));
@@ -98,8 +100,10 @@ public class UserServiceImpl implements UserService {
 
             return AuthResponse.builder()
                     .id(user.getId())
-                    .name(user.getName())
+                    .firstName(user.getFirstName())
+                    .lastName(user.getLastName())
                     .email(user.getEmail())
+                    .phone(user.getPhone())
                     .role(user.getRole().name())
                     .token(jwtToken)
                     .expiresIn(jwtUtils.getExpirationTime())
@@ -159,7 +163,8 @@ public class UserServiceImpl implements UserService {
         confirmationEmailRepository.save(forgotPasswordConfirmation);
     }
 
-    // This method allows users to reset their password using a valid token sent to their email
+    // This method allows users to reset their password using a valid token sent to
+    // their email
     @Override
     @Transactional
     public void resetPassword(ResetPasswordRequest reset) {
@@ -175,11 +180,12 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
-    // This method allows users to request a new email confirmation if they haven't verified their email yet
+    // This method allows users to request a new email confirmation if they haven't
+    // verified their email yet
     @Override
     @Transactional
     public void resendEmailConfirmation(ResendEmailConfirmationRequest request) {
-        User user = userRepository.findByEmail(request.email())
+        User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new BadRequestException(ResultCode.USER_NOT_FOUND_OR_DISABLED));
 
         if (user.isEnabled()) {
@@ -193,13 +199,14 @@ public class UserServiceImpl implements UserService {
         confirmationEmailRepository.save(resendEmailConfirmation);
 
         try {
-            mailService.sendEmailConfirmation(user.getEmail(),user.getName());
+            mailService.sendConfirmRegistrationAccount(user.getEmail(), user.getFirstName());
         } catch (MessagingException e) {
             log.error("Error sending email: {}", e.getMessage());
         }
     }
 
-    // This method is used to validate the JWT token and return the associated user information
+    // This method is used to validate the JWT token and return the associated user
+    // information
     @Override
     public ValidateTokenResponse validateToken(String token) {
         try {
@@ -265,8 +272,10 @@ public class UserServiceImpl implements UserService {
         }
         return UserResponse.builder()
                 .id(user.getId())
-                .name(user.getName())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
                 .email(user.getEmail())
+                .phone(user.getPhone())
                 .role(user.getRole().name())
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())

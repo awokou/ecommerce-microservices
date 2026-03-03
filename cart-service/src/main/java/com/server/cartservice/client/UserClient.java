@@ -9,6 +9,7 @@ import java.util.Optional;
 
 @FeignClient(name = "user-service", url = "${application.config.user-url}")
 public interface UserClient {
+
     @GetMapping("/{userId}")
-    Optional<UserResponse> findUserById(@PathVariable("userId") String userId);
+    Optional<UserResponse> findUserById(@PathVariable("userId") Long userId);
 }

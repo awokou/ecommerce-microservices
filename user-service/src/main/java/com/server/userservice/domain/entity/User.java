@@ -24,8 +24,14 @@ public class User extends BaseEntity implements UserDetails  {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String name;
+    @Column(name = "first_name",nullable = false)
+    private String firstName;
+
+    @Column(name = "last_name",nullable = false)
+    private String lastName;
+
+    @Column(name = "image_url")
+    private String imageUrl;
 
     @Column(unique = true, nullable = false)
     private String email;
@@ -36,6 +42,7 @@ public class User extends BaseEntity implements UserDetails  {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    private String phone;
     private boolean enabled;
 
     // UserDetails implementation

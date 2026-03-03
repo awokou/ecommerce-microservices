@@ -2,16 +2,12 @@ package com.server.orderservice.domain.entity;
 
 import com.server.orderservice.domain.enums.PaymentMethod;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
 
 @Data
 @Entity
@@ -19,7 +15,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "orders")
-public class Order implements Serializable {
+@EqualsAndHashCode(callSuper = true)
+public class Order extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,33 +24,13 @@ public class Order implements Serializable {
 
     private String orderNumber;
 
-    private String userId;
+    private Long userId;
 
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
 
     private BigDecimal totalPrice;
 
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-
-
-    @OneToMany(mappedBy = "order",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.LAZY
-    )
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OrderLine> orderLines = new ArrayList<>();
-
-    public void increaseTotalPrice(BigDecimal value) {
-        setTotalPrice(this.totalPrice.add(value));
-    }
-
-    public void addItem(OrderLine orderItem) {
-        orderLines.add(orderItem);
-    }
-
-    public void removeItem(Long itemId) {
-        this.orderLines.removeIf(item -> item.getId().equals(itemId));
-    }
 }

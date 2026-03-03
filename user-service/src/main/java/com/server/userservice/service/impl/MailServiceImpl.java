@@ -1,7 +1,6 @@
 package com.server.userservice.service.impl;
 
 import com.server.userservice.domain.entity.ConfirmationEmail;
-import com.server.userservice.domain.enums.NotificationType;
 import com.server.userservice.domain.event.NotificationEvent;
 import com.server.userservice.kafka.UserProducer;
 import com.server.userservice.repository.ConfirmationEmailRepository;
@@ -24,7 +23,6 @@ public class MailServiceImpl implements MailService {
     @Value("${client.base.url}")
     private String CLIENT_BASE_URL;
 
-    public static final String EMAIL_CHANNEL_NAME = "EMAIL";
     public static final String RECIPIENT_NAME = "recipientName";
     public static final String TOKEN_URL = "tokenUrl";
     public static final String OTP = "otp";
@@ -33,21 +31,18 @@ public class MailServiceImpl implements MailService {
     private final ConfirmationEmailRepository confirmationEmailRepository;
 
     @Override
-    public void sendEmailConfirmation(String email, String recipientName) {
-        String otp = CommonUtil.getRandomNum();  // 6 digits
+    public void sendConfirmRegistrationAccount(String email, String recipientName) {
+        String otp = CommonUtil.getRandomNum(); // 6 digits
         String token = CommonUtil.sha256Hash(otp + secretKey);
 
         saveConfirmationEmail(token, email);
 
         NotificationEvent notificationEvent = NotificationEvent.builder()
-                .channel(EMAIL_CHANNEL_NAME)
                 .recipient(email)
-                .notificationType(NotificationType.CONFIRM_REGISTRATION_ACCOUNT)
                 .params(Map.of(
                         RECIPIENT_NAME, recipientName,
                         TOKEN_URL, buildEmailUrl(token),
-                        OTP, otp
-                ))
+                        OTP, otp))
                 .build();
 
         userProducer.sendConfirmRegistrationAccount(notificationEvent);

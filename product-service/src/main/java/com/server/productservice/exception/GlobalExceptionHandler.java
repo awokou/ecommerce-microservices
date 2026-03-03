@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(ProductNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleProductNotFound(ProductNotFoundException ex) {
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleProductNotFound(ResourceNotFoundException ex) {
         log.error("Product not found: {}", ex.getMessage());
         ErrorResponse error = ErrorResponse.builder().timestamp(LocalDateTime.now())
                 .status(HttpStatus.NOT_FOUND.value())

@@ -60,7 +60,7 @@ public class UserController {
     // Endpoint for email verification with OTP
     @PostMapping("/verify-email/with-otp")
     public ResponseEntity<Void> verifyEmailWithOtp(@RequestBody @Valid VerifyEmailWithOtpRequest request) {
-        String token = CommonUtil.sha256Hash(request.otp() + secretKey);
+        String token = CommonUtil.sha256Hash(request.getOtp() + secretKey);
         userService.verifyEmail(token);
         return ResponseEntity.noContent().build();
     }

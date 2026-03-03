@@ -1,7 +1,7 @@
 package com.server.paymentservice.kafka;
 
 import com.server.paymentservice.config.KafkaPaymentTopicConfig;
-import com.server.paymentservice.domain.dto.PaymentNotification;
+import com.server.paymentservice.domain.event.PaymentNotification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class NotificationProducer {
+public class PaymentProducer {
 
     public final KafkaTemplate<String, PaymentNotification> kafkaTemplate;
 

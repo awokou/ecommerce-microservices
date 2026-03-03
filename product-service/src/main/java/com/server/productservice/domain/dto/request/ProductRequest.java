@@ -29,7 +29,7 @@ public class ProductRequest {
     private String imageUrl;
 
     @NotBlank(message = "Category is required")
-    private String category;
+    private Long categoryId;
 
     @NotNull(message = "Stock quantity is required")
     @Min(value = 0, message = "Stock cannot be negative")

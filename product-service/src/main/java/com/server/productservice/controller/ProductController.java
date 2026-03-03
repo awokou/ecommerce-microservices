@@ -23,9 +23,9 @@ public class ProductController {
 
     @Operation(summary = "Create a new product")
     @PostMapping
-    public ResponseEntity<ProductResponse> createProduct(@Valid @RequestBody ProductRequest request) {
+    public ResponseEntity<ProductRequest> createProduct(@Valid @RequestBody ProductRequest request) {
         log.info("Rest request to create product: {}", request.getProductCode());
-        ProductResponse product = productService.createProduct(request);
+        ProductRequest product = productService.createProduct(request);
         return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
 
@@ -61,11 +61,11 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
-    @Operation(summary = "Get products by category")
-    @GetMapping("/category/{category}")
-    public ResponseEntity<List<ProductResponse>> getProductsByCategory(@PathVariable String category) {
-        log.info("Rest request to get products by category: {}", category);
-        List<ProductResponse> products = productService.getProductsByCategory(category);
+    @Operation(summary = "Get products by categoryId")
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<List<ProductResponse>> getProductsByCategory(@PathVariable Long categoryId) {
+        log.info("Rest request to get products by categoryId: {}", categoryId);
+        List<ProductResponse> products = productService.getProductsByCategoryId(categoryId);
         return ResponseEntity.ok(products);
     }
 
@@ -78,18 +78,19 @@ public class ProductController {
     }
 
     @Operation(summary = "Update product")
-    @PutMapping("/{productCode}")
-    public ResponseEntity<ProductResponse> updateProduct(@PathVariable String productCode, @Valid @RequestBody ProductRequest request) {
-        log.info("Rest request to update product: {}", productCode);
-        ProductResponse product = productService.updateProduct(productCode, request);
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductRequest> updateProduct(@PathVariable Long id,
+            @Valid @RequestBody ProductRequest request) {
+        log.info("Rest request to update product: {}", id);
+        ProductRequest product = productService.updateProduct(id, request);
         return ResponseEntity.ok(product);
     }
 
     @Operation(summary = "Delete product")
-    @DeleteMapping("/{productCode}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable String productCode) {
-        log.info("Rest request to delete product: {}", productCode);
-        productService.deleteProduct(productCode);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProductById(@PathVariable Long id) {
+        log.info("Rest request to delete product: {}", id);
+        productService.deleteProductById(id);
         return ResponseEntity.noContent().build();
     }
 }
