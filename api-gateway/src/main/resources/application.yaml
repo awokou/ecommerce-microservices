@@ -4,6 +4,7 @@ server:
 spring:
   application:
     name: api-gateway
+
   cloud:
     gateway:
       server:
@@ -31,18 +32,6 @@ spring:
                   args:
                     name: cartServiceCB
                     fallbackUri: forward:/fallback/cart
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    gateway:
-      access: unrestricted
-    health:
-      show-details: always
-
 resilience4j:
   circuitbreaker:
     instances:
@@ -64,3 +53,14 @@ logging:
   level:
     org:
       springframework: ERROR
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    gateway:
+      access: unrestricted
+    health:
+      show-details: always

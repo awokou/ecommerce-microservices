@@ -1,5 +1,6 @@
-package com.server.paymentservice.domain.dto;
+package com.server.paymentservice.domain.dto.request;
 
+import com.server.paymentservice.domain.dto.response.UserResponse;
 import com.server.paymentservice.domain.enums.PaymentMethod;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;

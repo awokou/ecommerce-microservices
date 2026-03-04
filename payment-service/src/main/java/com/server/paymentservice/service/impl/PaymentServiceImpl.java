@@ -1,7 +1,7 @@
 package com.server.paymentservice.service.impl;
 
 import com.server.paymentservice.domain.event.PaymentNotification;
-import com.server.paymentservice.domain.dto.PaymentRequest;
+import com.server.paymentservice.domain.dto.request.PaymentRequest;
 import com.server.paymentservice.domain.entity.Payment;
 import com.server.paymentservice.domain.mapper.PaymentMapper;
 import com.server.paymentservice.kafka.PaymentProducer;
@@ -28,7 +28,7 @@ public class PaymentServiceImpl implements PaymentService {
                         paymentRequest.getOrderNumber(),
                         paymentRequest.getAmount(),
                         paymentRequest.getPaymentMethod(),
-                        paymentRequest.getUserResponse().getName(),
+                        paymentRequest.getUserResponse().getFirstName(),
                         paymentRequest.getUserResponse().getEmail()
                 );
 

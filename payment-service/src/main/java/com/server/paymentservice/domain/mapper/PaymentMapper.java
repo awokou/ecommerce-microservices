@@ -1,6 +1,6 @@
 package com.server.paymentservice.domain.mapper;
 
-import com.server.paymentservice.domain.dto.PaymentRequest;
+import com.server.paymentservice.domain.dto.request.PaymentRequest;
 import com.server.paymentservice.domain.entity.Payment;
 import org.springframework.stereotype.Component;
 

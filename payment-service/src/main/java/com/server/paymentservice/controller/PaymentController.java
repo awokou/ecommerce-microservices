@@ -1,6 +1,6 @@
 package com.server.paymentservice.controller;
 
-import com.server.paymentservice.domain.dto.PaymentRequest;
+import com.server.paymentservice.domain.dto.request.PaymentRequest;
 import com.server.paymentservice.service.PaymentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

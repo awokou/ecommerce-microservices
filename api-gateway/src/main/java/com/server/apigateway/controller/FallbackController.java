@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/fallback")
+@RequestMapping("/api/v1/fallback")
 public class FallbackController {
 
     @GetMapping("/products")
