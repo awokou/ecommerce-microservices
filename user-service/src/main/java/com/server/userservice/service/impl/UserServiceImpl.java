@@ -153,14 +153,14 @@ public class UserServiceImpl implements UserService {
 
         var jwtToken = jwtUtils.generateToken(user);
 
-        ConfirmationEmail forgotPasswordConfirmation = ConfirmationEmail.builder()
+        ConfirmationEmail savedConfirmationEmail = ConfirmationEmail.builder()
                 .email(email)
                 .token(jwtToken)
                 .revoked(true)
                 .expiredAt(LocalDateTime.now().plusMinutes(15))
                 .build();
 
-        confirmationEmailRepository.save(forgotPasswordConfirmation);
+        confirmationEmailRepository.save(savedConfirmationEmail);
     }
 
     // This method allows users to reset their password using a valid token sent to

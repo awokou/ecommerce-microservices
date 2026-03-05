@@ -21,7 +21,7 @@ public class RegisterRequest {
 
     private String phone;
 
-    private String imageUrl;
+    //private String imageUrl;
 
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")

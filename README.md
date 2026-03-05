@@ -15,7 +15,7 @@ This project is a simple e-commerce application built using a microservices arch
 ## 🛠️ Tech Stack
 
 - Java 21
-- Spring Boot 3.5.+
+- Spring Boot 3.5 +
 - Spring Cloud
 - Spring Data JPA
 - MySQL
