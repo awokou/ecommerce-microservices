@@ -16,7 +16,7 @@ spring:
             - id: product-service
               uri: lb://PRODUCT-SERVICE
               predicates:
-                - Path=/api/v1/products/**
+                - Path=/api/v1/product/**,/api/v1/category/**
               filters:
                 - name: CircuitBreaker
                   args:
@@ -41,17 +41,17 @@ spring:
             - id: order-service
               uri: lb://ORDER-SERVICE
               predicates:
-                - Path=/api/v1/orders/**
+                - Path=/api/v1/order/**
 
             - id: payment-service
               uri: lb://PAYMENT-SERVICE
               predicates:
-                - Path=/api/v1/payments/**
+                - Path=/api/v1/payment/**
 
             - id: identity-service
               uri: lb://USER-SERVICE
               predicates:
-                - Path=/api/users/**
+                - Path=/api/user/**
                 
 resilience4j:
   circuitbreaker:
