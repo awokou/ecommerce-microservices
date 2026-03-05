@@ -1,4 +1,4 @@
-# 🛒 Microservices Architecture with Eureka, Spring Cloud Gateway, JWT Security and Prometheus Monitoring
+# Microservices Architecture with Eureka, Spring Cloud Gateway, JWT Security and Prometheus Monitoring
 
 ## Overview
 
@@ -114,10 +114,10 @@ The PaymentService manages payment processing and tracks the payment status of o
 Endpoints:
 - POST /api/v1/payment: Process a payment
 - GET /api/v1/payment/{orderId}: Get payment details by order ID
-- Port: 9191
+- Port: 8085
 
 ### Monitoring
-**This project uses Prometheus to scrape metrics from each service and Grafana to visualize these metrics.**
+**This project uses Prometheus to scrape metrics from each service to visualize these metrics.**
 
 #### Prometheus Setup
 Prometheus is used to scrape metrics from the ***/actuator/prometheus*** endpoint exposed by each service.
