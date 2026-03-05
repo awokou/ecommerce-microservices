@@ -65,7 +65,7 @@ This project implements a microservices architecture with seven core services: `
 ```
 ## Services
 
-### 1. **Eureka Server (Service Registry)**
+### 1. **Eureka Server**
 The **Eureka Server** is responsible for managing service registration and discovery. It allows the microservices to register themselves and discover other services dynamically.
 
 **Running the Eureka Server:**
