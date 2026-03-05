@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class User {
     private Long id;
-    private String name;
+    private String firstName;
+    private String lastName;
+    private String imageUrl;
     private String email;
+    private String phone;
 }

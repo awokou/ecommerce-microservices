@@ -1,6 +1,7 @@
 package com.server.orderservice.controller;
 
 import com.server.orderservice.domain.dto.request.OrderRequest;
+import com.server.orderservice.domain.dto.response.OrderLineResponse;
 import com.server.orderservice.domain.dto.response.OrderResponse;
 import com.server.orderservice.service.OrderService;
 import jakarta.validation.Valid;
@@ -27,7 +28,7 @@ public class OrderController {
 
     @GetMapping("/{orderId}")
     public ResponseEntity<OrderResponse> findOrder(@PathVariable Long orderId) {
-        return ResponseEntity.ok(this.orderService.findOrder(orderId));
+        return ResponseEntity.ok(orderService.findOrder(orderId));
     }
 
     @PostMapping
@@ -35,5 +36,10 @@ public class OrderController {
         Long orderId = this.orderService.createdOrder(request);
         URI uriOrder = URI.create("/api/v1/orders/" + orderId);
         return ResponseEntity.created(uriOrder).body(orderId);
+    }
+
+    @GetMapping(path = "/order-line/{orderId}")
+    public ResponseEntity<List<OrderLineResponse>> findOrderLinesByOrderId(@PathVariable Long orderId) {
+        return ResponseEntity.ok(orderService.findAllOrderLinesByOrderId(orderId));
     }
 }

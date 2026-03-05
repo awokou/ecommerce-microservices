@@ -16,10 +16,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
 @Slf4j
-@RequiredArgsConstructor
 @Component
+@RequiredArgsConstructor
 public class NotificationConsumer {
 
     private final NotificationRepository notificationRepository;
@@ -37,7 +36,7 @@ public class NotificationConsumer {
         notificationRepository.save(notification);
 
         String destinationEmail = paymentConfirmation.getEmail();
-        String customerName = paymentConfirmation.getName();
+        String customerName = paymentConfirmation.getFirstName() + " " + paymentConfirmation.getLastName();
         BigDecimal amount = paymentConfirmation.getAmount();
         String orderReference = paymentConfirmation.getOrderNumber();
 
@@ -56,7 +55,8 @@ public class NotificationConsumer {
         notificationRepository.save(notification);
 
         String destinationEmail = orderConfirmation.getUser().getEmail();
-        String customerName = orderConfirmation.getUser().getName();
+        String customerName = orderConfirmation.getUser().getFirstName() + " "
+                + orderConfirmation.getUser().getLastName();
         BigDecimal totalAmount = orderConfirmation.getTotalAmount();
         String orderReference = orderConfirmation.getOrderNumber();
         List<Product> products = orderConfirmation.getProducts();

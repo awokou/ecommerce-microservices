@@ -14,7 +14,9 @@ public class PaymentConfirmation {
     private String orderNumber;
     private BigDecimal amount;
     private PaymentMethod paymentMethod;
-    private String name;
+    private String firstName;
+    private String lastName;
+    private String imageUrl;
     private String email;
-
+    private String phone;
 }

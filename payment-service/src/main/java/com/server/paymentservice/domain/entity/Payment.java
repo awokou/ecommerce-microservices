@@ -19,12 +19,12 @@ public class Payment extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private BigDecimal amount;
-
     private Long orderId;
-
-    private Boolean isPayed;
+    private BigDecimal amount;
+    private String transactionId;
 
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
+
+    private boolean isPayed;
 }
