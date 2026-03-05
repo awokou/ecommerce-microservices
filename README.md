@@ -8,13 +8,13 @@ This project implements a microservices architecture with seven core services: `
 
 - Java 21
 - Spring Boot 3.5 +
-- Spring Cloud
+- Spring Cloud Gateway
 - Spring Data JPA
-- MySQL
-- Redis
+- Spring Web
+- Spring Security JWT
 - OpenFeign
 - Maven
-- PostGreSQL 17 database
+- PostGreSQL database
 
 ## Architecture
 
