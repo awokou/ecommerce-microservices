@@ -1,26 +1,8 @@
 package com.server.userservice.service.impl;
 
-import com.server.userservice.domain.dto.request.ResendEmailConfirmationRequest;
-import com.server.userservice.domain.dto.request.ResetPasswordRequest;
-import com.server.userservice.domain.dto.response.AuthResponse;
-import com.server.userservice.domain.dto.request.LoginRequest;
-import com.server.userservice.domain.dto.request.RegisterRequest;
-import com.server.userservice.domain.dto.response.UserResponse;
-import com.server.userservice.domain.dto.response.ValidateTokenResponse;
-import com.server.userservice.domain.entity.ConfirmationEmail;
-import com.server.userservice.domain.enums.ResultCode;
-import com.server.userservice.domain.enums.Role;
-import com.server.userservice.domain.entity.User;
-import com.server.userservice.exception.AlreadyExistException;
-import com.server.userservice.exception.BadRequestException;
-import com.server.userservice.exception.ResourceNotFoundException;
-import com.server.userservice.repository.ConfirmationEmailRepository;
-import com.server.userservice.repository.UserRepository;
-import com.server.userservice.security.JwtUtils;
-import com.server.userservice.service.MailService;
-import com.server.userservice.service.UserService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.messaging.MessagingException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,8 +11,28 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import com.server.userservice.domain.dto.request.LoginRequest;
+import com.server.userservice.domain.dto.request.RegisterRequest;
+import com.server.userservice.domain.dto.request.ResendEmailConfirmationRequest;
+import com.server.userservice.domain.dto.request.ResetPasswordRequest;
+import com.server.userservice.domain.dto.response.AuthResponse;
+import com.server.userservice.domain.dto.response.UserResponse;
+import com.server.userservice.domain.dto.response.ValidateTokenResponse;
+import com.server.userservice.domain.entity.ConfirmationEmail;
+import com.server.userservice.domain.entity.User;
+import com.server.userservice.domain.enums.ResultCode;
+import com.server.userservice.domain.enums.Role;
+import com.server.userservice.exception.AlreadyExistException;
+import com.server.userservice.exception.BadRequestException;
+import com.server.userservice.exception.ResourceNotFoundException;
+import com.server.userservice.repository.ConfirmationEmailRepository;
+import com.server.userservice.repository.UserRepository;
+import com.server.userservice.security.JwtUtils;
+import com.server.userservice.service.MailService;
+import com.server.userservice.service.UserService;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -56,6 +58,7 @@ public class UserServiceImpl implements UserService {
         var user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
+                .gender(request.getGender())
                 .email(request.getEmail())
                 .phone(request.getPhone())
                 .password(passwordEncoder.encode(request.getPassword()))
@@ -69,8 +72,9 @@ public class UserServiceImpl implements UserService {
         log.info("User registered successfully: {}", user.getUsername());
 
         return AuthResponse.builder()
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .gender(user.getGender().name())
                 .email(user.getEmail())
                 .phone(user.getPhone())
                 .role(user.getRole().name())
@@ -274,6 +278,7 @@ public class UserServiceImpl implements UserService {
                 .id(user.getId())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
+                .gender(user.getGender().name())
                 .email(user.getEmail())
                 .phone(user.getPhone())
                 .role(user.getRole().name())

@@ -3,7 +3,6 @@ package com.server.userservice.utils;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class CommonUtil {
