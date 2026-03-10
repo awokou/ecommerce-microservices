@@ -17,7 +17,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class MailServiceImpl implements MailService {
 
-    @Value("${jwt.secret}")
+    @Value("${application.security.jwt.secret}")
     private String secretKey;
 
     @Value("${client.base.url}")
