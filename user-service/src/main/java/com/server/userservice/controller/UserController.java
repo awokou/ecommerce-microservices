@@ -22,7 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
 
-    @Value("${jwt.secret}")
+    @Value("${application.security.jwt.secret}")
     private String secretKey;
 
     private final UserService userService;
@@ -64,7 +64,6 @@ public class UserController {
         userService.verifyEmail(token);
         return ResponseEntity.noContent().build();
     }
-
 
     // Endpoint for email verification with token
     @PostMapping("/verify-email/with-token")

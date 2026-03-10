@@ -7,25 +7,9 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.servers.Server;
 
-@OpenAPIDefinition(
-        info = @Info(
-                title = "User Service",
-                description = "OpenAPI documentation for the User Service."
-        ),
-        servers = {
-                @Server(
-                        url = "http://localhost:8083",
-                        description = "Local DEV"
-                )
-        }
-)
-@SecurityScheme(
-        name = "bearerAuth",
-        description = "JWT Authentication",
-        scheme = "bearer",
-        type = SecuritySchemeType.HTTP,
-        bearerFormat = "JWT",
-        in = SecuritySchemeIn.HEADER
-)
+@OpenAPIDefinition(info = @Info(title = "User Service", description = "OpenAPI documentation for the User Service."), servers = {
+                @Server(url = "http://localhost:8083", description = "Local DEV")
+})
+@SecurityScheme(name = "bearerAuth", description = "JWT Authentication", scheme = "bearer", type = SecuritySchemeType.HTTP, bearerFormat = "JWT", in = SecuritySchemeIn.HEADER)
 public class OpenApiConfig {
 }

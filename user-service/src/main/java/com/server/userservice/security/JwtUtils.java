@@ -20,10 +20,10 @@ import java.util.function.Function;
 @Component
 public class JwtUtils {
 
-    @Value("${jwt.secret}")
+    @Value("${application.security.jwt.secret}")
     private String secretKey;
 
-    @Value("${jwt.expiration}")
+    @Value("${application.security.jwt.expiration}")
     private long jwtExpiration;
 
     public String extractUsername(String token) {
@@ -51,7 +51,7 @@ public class JwtUtils {
                 .claim("authorities", authorities)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + jwtExpiration))
-                .signWith(getSignInKey()) // L'algorithme est auto-détecté par la clé
+                .signWith(getSignInKey())
                 .compact();
     }
 
@@ -69,17 +69,18 @@ public class JwtUtils {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser() // parserBuilder() est déprécié
-                .verifyWith(getSignInKey()) // setSigningKey() est déprécié
+        return Jwts.parser()
+                .verifyWith(getSignInKey())
                 .build()
-                .parseSignedClaims(token) // parseClaimsJws() est déprécié
-                .getPayload(); // getBody() est déprécié
+                .parseSignedClaims(token)
+                .getPayload();
     }
 
     private SecretKey getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
+
     public long getExpirationTime() {
         return jwtExpiration;
     }

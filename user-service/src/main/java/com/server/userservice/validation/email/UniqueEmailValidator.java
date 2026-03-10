@@ -23,8 +23,6 @@ public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, St
             Optional<User> user = repository.findByEmail(email);
             return user == null;
         } else {
-            // Durante a execução da classe LivrariaMvcApplication
-            // não há injeção de dependência
         }
         return true;
     }

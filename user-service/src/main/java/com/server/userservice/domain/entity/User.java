@@ -1,5 +1,6 @@
 package com.server.userservice.domain.entity;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -62,6 +63,7 @@ public class User extends BaseEntity implements UserDetails {
 
     private String phone;
     private boolean enabled;
+    private LocalDateTime lastLogin;
 
     // UserDetails implementation
     @Override

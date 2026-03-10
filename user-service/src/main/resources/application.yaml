@@ -19,7 +19,7 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: false
+        format_sql: true
 
   mail:
     host: smtp.gmail.com
@@ -41,9 +41,11 @@ spring:
         spring.json.type.mapping: notificationEvent:com.server.userservice.domain.event.NotificationEvent
 
 # JWT Configuration
-jwt:
-  secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
-  expiration: 86400000 # 24 hours in milliseconds
+application:
+  security:
+    jwt:
+      secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+      expiration: 86400000 # 24 hours in milliseconds
 
 # Eureka
 eureka:

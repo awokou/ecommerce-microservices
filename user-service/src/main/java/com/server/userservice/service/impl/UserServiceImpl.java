@@ -101,6 +101,7 @@ public class UserServiceImpl implements UserService {
 
             var jwtToken = jwtUtils.generateToken(user);
             log.info("User logged in successfully: {}", user.getUsername());
+            updateUserLastLoginDate(user);
 
             return AuthResponse.builder()
                     .id(user.getId())
@@ -285,5 +286,10 @@ public class UserServiceImpl implements UserService {
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())
                 .build();
+    }
+
+    private void updateUserLastLoginDate(User user) {
+        user.setLastLogin(LocalDateTime.now());
+        userRepository.save(user);
     }
 }
