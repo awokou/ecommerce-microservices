@@ -1,7 +1,6 @@
-package com.server.userservice.domain.dto.request;
+package com.server.userservice.domain.dto.external;
 
 import com.server.userservice.domain.enums.Gender;
-
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -13,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegisterRequest {
+public class UserDto {
 
     @NotBlank(message = "First Name is required")
     private String firstName;
@@ -22,10 +21,7 @@ public class RegisterRequest {
     private String lastName;
 
     private Gender gender;
-
     private String phone;
-
-    // private String imageUrl;
 
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")

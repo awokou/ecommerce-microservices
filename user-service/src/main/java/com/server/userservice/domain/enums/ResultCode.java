@@ -1,7 +1,6 @@
 package com.server.userservice.domain.enums;
 
 public enum ResultCode {
-    SUCCESS(200, "Success"),
     // General errors
     BAD_REQUEST(400, "Bad request"),
     // User-related errors

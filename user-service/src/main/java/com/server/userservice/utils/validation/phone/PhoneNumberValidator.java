@@ -1,4 +1,4 @@
-package com.server.userservice.validation.phone;
+package com.server.userservice.utils.validation.phone;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

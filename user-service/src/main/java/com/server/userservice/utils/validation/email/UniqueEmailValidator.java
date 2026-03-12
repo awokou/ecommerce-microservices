@@ -1,4 +1,4 @@
-package com.server.userservice.validation.email;
+package com.server.userservice.utils.validation.email;
 
 import jakarta.validation.ConstraintValidator;
 import com.server.userservice.domain.entity.User;

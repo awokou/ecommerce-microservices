@@ -1,4 +1,4 @@
-package com.server.userservice.domain.dto.request;
+package com.server.userservice.domain.dto.external;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ValidateTokenRequest {
+public class ValidateTokenDto {
     private String token;
 }
